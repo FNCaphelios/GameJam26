@@ -305,7 +305,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7732227701749690246, guid: 2af2bd0e42a89a14cbac58cffa6d4b70, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1545458737}
   m_SourcePrefab: {fileID: 100100000, guid: 2af2bd0e42a89a14cbac58cffa6d4b70, type: 3}
 --- !u!1 &469013165
 GameObject:
@@ -478,14 +481,17 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 470944661292843866, guid: cf4fde32bb191d2469b0a8b8ac4a1f00, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1582515569}
   m_SourcePrefab: {fileID: 100100000, guid: cf4fde32bb191d2469b0a8b8ac4a1f00, type: 3}
 --- !u!114 &578599231 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2659794703992002285, guid: cf4fde32bb191d2469b0a8b8ac4a1f00, type: 3}
   m_PrefabInstance: {fileID: 518959487}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1582515568}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cba68f889df460c41a64e91f57899e12, type: 3}
@@ -581,7 +587,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 216519984260170577, guid: 2af2bd0e42a89a14cbac58cffa6d4b70, type: 3}
   m_PrefabInstance: {fileID: 271690514}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1545458732}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cba68f889df460c41a64e91f57899e12, type: 3}
@@ -619,6 +625,42 @@ Transform:
   - {fileID: 469013166}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1545458732 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7732227701749690246, guid: 2af2bd0e42a89a14cbac58cffa6d4b70, type: 3}
+  m_PrefabInstance: {fileID: 271690514}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1545458737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1545458732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b586514700b0d954e88d8d0060e39d07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlanetSpin
+  SpinTime: 1000
+--- !u!1 &1582515568 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 470944661292843866, guid: cf4fde32bb191d2469b0a8b8ac4a1f00, type: 3}
+  m_PrefabInstance: {fileID: 518959487}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1582515569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1582515568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b586514700b0d954e88d8d0060e39d07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlanetSpin
+  SpinTime: 670
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

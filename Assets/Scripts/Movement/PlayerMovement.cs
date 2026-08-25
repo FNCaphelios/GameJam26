@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     public float jumpForce = 5f;
     [SerializeField] private bool isGrounded;
     public float groundCheckDistance = 1.1f;
+    private Vector3 referenceFrameVelocity = Vector3.zero;
 
     public InputAction moveAction;
     public InputAction lookAction;
@@ -47,11 +48,28 @@ public class PlayerMovement : MonoBehaviour
         rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
         playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
         transform.rotation *= Quaternion.Euler(0, lookInput.x * lookSpeed, 0);
-        isGrounded = Physics.Raycast(transform.position, -transform.up, groundCheckDistance);
 
-        if (jumpAction.WasPressedThisFrame() && isGrounded)
+        // Ground Check mit 'out hit'
+        RaycastHit hit;
+        isGrounded = Physics.Raycast(transform.position, -transform.up, out hit, groundCheckDistance);
+
+        if (isGrounded)
         {
-            wantsToJump = true;
+            // Planetenrotation auslesen, falls vorhanden
+            PlanetSpin planetSpin = hit.collider.GetComponentInParent<PlanetSpin>();
+            if (planetSpin != null)
+            {
+                referenceFrameVelocity = planetSpin.GetSurfaceVelocity(transform.position);
+            }
+            else
+            {
+                referenceFrameVelocity = Vector3.zero;
+            }
+
+            if (jumpAction.WasPressedThisFrame())
+            {
+                wantsToJump = true;
+            }
         }
     }
 
@@ -65,8 +83,8 @@ public class PlayerMovement : MonoBehaviour
             input.Normalize();
         }
 
-        Vector3 moveDirection = (transform.forward * input.y) + (transform.right * input.x);        
-        float currentSpeed = sprintAction.IsPressed() ? sprintSpeed : walkSpeed;        
+        Vector3 moveDirection = (transform.forward * input.y) + (transform.right * input.x);
+        float currentSpeed = sprintAction.IsPressed() ? sprintSpeed : walkSpeed;
         Vector3 desiredMoveVelocity = moveDirection * currentSpeed;
         float currentVerticalSpeed = Vector3.Dot(rb.linearVelocity, transform.up);
 
@@ -76,6 +94,7 @@ public class PlayerMovement : MonoBehaviour
             wantsToJump = false;
         }
 
-        rb.linearVelocity = desiredMoveVelocity + (transform.up * currentVerticalSpeed);
+        // Die referenceFrameVelocity wird hier am Ende addiert
+        rb.linearVelocity = desiredMoveVelocity + (transform.up * currentVerticalSpeed) + referenceFrameVelocity;
     }
 }
