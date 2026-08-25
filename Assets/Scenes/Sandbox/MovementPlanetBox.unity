@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: dd5863d1db3f82b49bfb320cea74ccea, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -522,6 +522,34 @@ PrefabInstance:
     - target: {fileID: 3934819343140802111, guid: 1fd04087fd99ff0429fa7421712eebbe, type: 3}
       propertyPath: sprintAction.m_SingletonActionBindings.Array.data[0].m_Action
       value: Sprint
+      objectReference: {fileID: 0}
+    - target: {fileID: 3952680908109410864, guid: 1fd04087fd99ff0429fa7421712eebbe, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3952680908109410864, guid: 1fd04087fd99ff0429fa7421712eebbe, type: 3}
+      propertyPath: m_ClearFlags
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3952680908109410864, guid: 1fd04087fd99ff0429fa7421712eebbe, type: 3}
+      propertyPath: orthographic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3952680908109410864, guid: 1fd04087fd99ff0429fa7421712eebbe, type: 3}
+      propertyPath: field of view
+      value: 60.000004
+      objectReference: {fileID: 0}
+    - target: {fileID: 3952680908109410864, guid: 1fd04087fd99ff0429fa7421712eebbe, type: 3}
+      propertyPath: m_FocalLength
+      value: 20.78461
+      objectReference: {fileID: 0}
+    - target: {fileID: 3952680908109410864, guid: 1fd04087fd99ff0429fa7421712eebbe, type: 3}
+      propertyPath: m_projectionMatrixMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6792380479633579525, guid: 1fd04087fd99ff0429fa7421712eebbe, type: 3}
+      propertyPath: m_CameraType
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8082279987264362683, guid: 1fd04087fd99ff0429fa7421712eebbe, type: 3}
       propertyPath: m_LocalPosition.x
