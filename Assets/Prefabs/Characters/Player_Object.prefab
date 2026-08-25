@@ -101,6 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   playerCamera: {fileID: 3952680908109410864}
   walkSpeed: 6
+  sprintSpeed: 10
   lookSpeed: 0.15
   lookXLimit: 90
   jumpForce: 5
@@ -192,6 +193,16 @@ MonoBehaviour:
       m_Flags: 0
     m_Flags: 0
     m_Priority: 0
+  sprintAction:
+    m_Name: Sprint
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 6bdd2f23-d8a3-4612-9c5a-76cb0ab75475
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+    m_Priority: 0
 --- !u!114 &8236855113906611446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,6 +215,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60f506b2a8a366b4295be56692ef61c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GravityReceiver
+  planetA: {fileID: 0}
+  planetB: {fileID: 0}
+  forceFromPlanetA: 0
+  forceFromPlanetB: 0
+  totalForce: 0
 --- !u!1 &3962648151081408553
 GameObject:
   m_ObjectHideFlags: 0
