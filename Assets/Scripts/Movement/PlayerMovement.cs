@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +8,8 @@ public class PlayerMovement : MonoBehaviour
 {
     public Camera playerCamera;
     public float walkSpeed = 6f;
+    public float sprintSpeed = 10f;
+
     public float lookSpeed = 0.5f;
     public float lookXLimit = 45f;
     private float rotationX = 0;
@@ -19,9 +20,11 @@ public class PlayerMovement : MonoBehaviour
     public InputAction moveAction;
     public InputAction lookAction;
     public InputAction jumpAction;
+    public InputAction sprintAction;
 
     private Rigidbody rb;
     private bool canMove = true;
+    private bool wantsToJump = false;
 
     void Start()
     {
@@ -29,8 +32,8 @@ public class PlayerMovement : MonoBehaviour
         moveAction.Enable();
         lookAction.Enable();
         jumpAction.Enable();
+        sprintAction.Enable();
 
-        // locks cursor in the middle of the screen
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -39,47 +42,40 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!canMove) return;
 
-        // up/down logic
         Vector2 lookInput = lookAction.ReadValue<Vector2>();
         rotationX -= lookInput.y * lookSpeed;
         rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
         playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
-
-        // left/right logic
         transform.rotation *= Quaternion.Euler(0, lookInput.x * lookSpeed, 0);
-
-        // Das 'bool' am Anfang ist weg!
         isGrounded = Physics.Raycast(transform.position, -transform.up, groundCheckDistance);
+
         if (jumpAction.WasPressedThisFrame() && isGrounded)
         {
-            // ForceMode.Impulse ist wichtig, da es ein sofortiger Stoß ist, keine stetige Kraft
-            rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+            wantsToJump = true;
         }
-
     }
 
     void FixedUpdate()
     {
         if (!canMove) return;
 
-        //reads Input meaning Keys (WASD). W/S are on the same axis. A/D on the same axis
         Vector2 input = moveAction.ReadValue<Vector2>();
-
-        // without this, our character would move with 1.44f when going diagonally instead of 1.0f 
         if (input.sqrMagnitude > 1f)
         {
             input.Normalize();
         }
 
-        // logic so that character always moves forward, depending on where the camera is facing
-        Vector3 moveDirection = (transform.forward * input.y) + (transform.right * input.x);
+        Vector3 moveDirection = (transform.forward * input.y) + (transform.right * input.x);        
+        float currentSpeed = sprintAction.IsPressed() ? sprintSpeed : walkSpeed;        
+        Vector3 desiredMoveVelocity = moveDirection * currentSpeed;
+        float currentVerticalSpeed = Vector3.Dot(rb.linearVelocity, transform.up);
 
-        Vector3 targetVelocity = moveDirection * walkSpeed;
-        targetVelocity.y = rb.linearVelocity.y;
-        rb.linearVelocity = targetVelocity;
+        if (wantsToJump)
+        {
+            currentVerticalSpeed = jumpForce;
+            wantsToJump = false;
+        }
 
-
-
-
+        rb.linearVelocity = desiredMoveVelocity + (transform.up * currentVerticalSpeed);
     }
 }
