@@ -441,10 +441,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3382296550655058855, guid: eec3a00756c4be54f9d855345fd40386, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5250568985939286735, guid: eec3a00756c4be54f9d855345fd40386, type: 3}
       propertyPath: m_Name
       value: FinalPlanetA
@@ -465,18 +461,6 @@ PrefabInstance:
     - target: {fileID: 1640988109942237160, guid: e127c371ab38b4a439b4d72884d5afd8, type: 3}
       propertyPath: m_Name
       value: FinalPlanetB
-      objectReference: {fileID: 0}
-    - target: {fileID: 1640988109942237160, guid: e127c371ab38b4a439b4d72884d5afd8, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3025734318359168328, guid: e127c371ab38b4a439b4d72884d5afd8, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3025734318359168328, guid: e127c371ab38b4a439b4d72884d5afd8, type: 3}
-      propertyPath: gravityStrength
-      value: 453467
       objectReference: {fileID: 0}
     - target: {fileID: 5704480066271679916, guid: e127c371ab38b4a439b4d72884d5afd8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -538,6 +522,10 @@ PrefabInstance:
     - target: {fileID: 4306403945308683764, guid: dd70f17ea88537d43ba186f30a74a55d, type: 3}
       propertyPath: m_Name
       value: Player_Object
+      objectReference: {fileID: 0}
+    - target: {fileID: 4306403945308683764, guid: dd70f17ea88537d43ba186f30a74a55d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5211189418605155032, guid: dd70f17ea88537d43ba186f30a74a55d, type: 3}
       propertyPath: m_Constraints
