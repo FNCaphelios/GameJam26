@@ -1,8 +1,16 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
+using static Unity.VisualScripting.Dependencies.Sqlite.SQLite3;
 
 public class ChatBubble :MonoBehaviour
 {
+    public static void Create(Transform parent, Vector3 localPosition, string text)
+    {
+        Transform chatBubbleTransform = Instantiate(GameAssets.i.pfChatBubble, parent);
+        chatBubbleTransform.localPosition = localPosition;
+        chatBubbleTransform.GetComponent<ChatBubble>().Setup(text);
+        Destroy(chatBubbleTransform.gameObject, 4f);
+    }
     private SpriteRenderer backgroundSpriteRenderer;
     private TextMeshPro textMeshPro;
 
