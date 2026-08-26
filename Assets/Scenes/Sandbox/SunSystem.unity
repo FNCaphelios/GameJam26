@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: dd5863d1db3f82b49bfb320cea74ccea, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -131,17 +131,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player_Object
       objectReference: {fileID: 0}
+    - target: {fileID: 3952680908109410864, guid: 1fd04087fd99ff0429fa7421712eebbe, type: 3}
+      propertyPath: far clip plane
+      value: 10000
+      objectReference: {fileID: 0}
     - target: {fileID: 8082279987264362683, guid: 1fd04087fd99ff0429fa7421712eebbe, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4914.62
+      value: 5006.8
       objectReference: {fileID: 0}
     - target: {fileID: 8082279987264362683, guid: 1fd04087fd99ff0429fa7421712eebbe, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 237.42
+      value: 269
       objectReference: {fileID: 0}
     - target: {fileID: 8082279987264362683, guid: 1fd04087fd99ff0429fa7421712eebbe, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 25.36
+      value: -18.9
       objectReference: {fileID: 0}
     - target: {fileID: 8082279987264362683, guid: 1fd04087fd99ff0429fa7421712eebbe, type: 3}
       propertyPath: m_LocalRotation.w
@@ -368,6 +372,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2128476238750524047, guid: adce27a9a27841446ac31d08f918e09e, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a69645847b855874cb0fe7693751dc3f, type: 2}
+    - target: {fileID: 2659794703992002285, guid: adce27a9a27841446ac31d08f918e09e, type: 3}
+      propertyPath: gravityStrength
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -400,7 +412,7 @@ MonoBehaviour:
   planetB: {fileID: 7732227702922454546}
   DistancePlanetA: 5000
   DistancePlanetB: 7000
-  orbitSpeedPlanetA: 1
+  orbitSpeedPlanetA: 0.1
   orbitSpeedPlanetB: 1.1
 --- !u!114 &1817579637
 MonoBehaviour:
@@ -434,6 +446,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1895409677922748558, guid: ebb3e0d8fd61db8459f7218f7ededa77, type: 3}
+      propertyPath: gravityStrength
+      value: 453467
+      objectReference: {fileID: 0}
+    - target: {fileID: 2462118946251906493, guid: ebb3e0d8fd61db8459f7218f7ededa77, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: ab3281bb30cb57b42b7511d83dfdd320, type: 2}
     - target: {fileID: 2582615177462977783, guid: ebb3e0d8fd61db8459f7218f7ededa77, type: 3}
       propertyPath: m_LocalPosition.x
       value: 7000
@@ -478,6 +498,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlanetB
       objectReference: {fileID: 0}
+    - target: {fileID: 7060052564789541429, guid: ebb3e0d8fd61db8459f7218f7ededa77, type: 3}
+      propertyPath: SpinTime
+      value: 1200
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -502,6 +526,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 563720254282123920, guid: e436df2316350f54f923734d11d5959e, type: 3}
+      propertyPath: gravityStrength
+      value: 613125
+      objectReference: {fileID: 0}
+    - target: {fileID: 1099343331656240896, guid: e436df2316350f54f923734d11d5959e, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: ef67bc5e547d5364095d0f5487d488b4, type: 2}
     - target: {fileID: 1459547396265422549, guid: e436df2316350f54f923734d11d5959e, type: 3}
       propertyPath: m_Name
       value: PlanetA
@@ -545,6 +577,10 @@ PrefabInstance:
     - target: {fileID: 2236752117355213935, guid: e436df2316350f54f923734d11d5959e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6297083588443902091, guid: e436df2316350f54f923734d11d5959e, type: 3}
+      propertyPath: SpinTime
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

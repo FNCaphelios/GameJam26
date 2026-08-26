@@ -55,16 +55,25 @@ public class PlayerMovement : MonoBehaviour
 
         if (isGrounded)
         {
-            // Planetenrotation auslesen, falls vorhanden
+            Vector3 spinVelocity = Vector3.zero;
+            Vector3 orbitVelocity = Vector3.zero;
+
+            // 1. Eigendrehung des Planeten
             PlanetSpin planetSpin = hit.collider.GetComponentInParent<PlanetSpin>();
             if (planetSpin != null)
             {
-                referenceFrameVelocity = planetSpin.GetSurfaceVelocity(transform.position);
+                spinVelocity = planetSpin.GetSurfaceVelocity(transform.position);
             }
-            else
+
+            // 2. Bahngeschwindigkeit um die Sonne
+            SunSystemLogic sunSystem = FindAnyObjectByType<SunSystemLogic>();
+            if (sunSystem != null && hit.collider.transform.parent != null)
             {
-                referenceFrameVelocity = Vector3.zero;
+                orbitVelocity = sunSystem.GetOrbitVelocity(hit.collider.transform.parent);
             }
+
+            // Gesamte Trägheitsgeschwindigkeit des Bodens
+            referenceFrameVelocity = spinVelocity + orbitVelocity;
 
             if (jumpAction.WasPressedThisFrame())
             {
@@ -86,7 +95,9 @@ public class PlayerMovement : MonoBehaviour
         Vector3 moveDirection = (transform.forward * input.y) + (transform.right * input.x);
         float currentSpeed = sprintAction.IsPressed() ? sprintSpeed : walkSpeed;
         Vector3 desiredMoveVelocity = moveDirection * currentSpeed;
-        float currentVerticalSpeed = Vector3.Dot(rb.linearVelocity, transform.up);
+        Vector3 relativeVelocity = rb.linearVelocity - referenceFrameVelocity;
+
+        float currentVerticalSpeed = Vector3.Dot(relativeVelocity, transform.up);
 
         if (wantsToJump)
         {
