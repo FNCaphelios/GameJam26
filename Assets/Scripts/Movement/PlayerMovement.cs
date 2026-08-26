@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(GravityReceiver))]
 public class PlayerMovement : MonoBehaviour
 {
     public Camera playerCamera;
@@ -13,9 +14,21 @@ public class PlayerMovement : MonoBehaviour
     public float lookSpeed = 0.5f;
     public float lookXLimit = 45f;
     private float rotationX = 0;
+    private float mouseXDelta = 0f;
+
     public float jumpForce = 5f;
+    public float airControlAcceleration = 15f;
+
+    [Header("Ground Check Settings")]
+    [Tooltip("Der Radius der Kugel, die den Boden prüft.")]
+    public float groundCheckRadius = 0.3f;
+    [Tooltip("Verschiebt die Prüfkugel nach oben/unten. Pass dies im Scene-Fenster an, bis die grüne Kugel genau deine Füße umschließt!")]
+    public float groundCheckOffset = -0.1f;
+
+    [Tooltip("Wähle hier alle Layer aus, die als Boden gelten. Der Layer des Spielers darf NICHT ausgewählt sein!")]
+    public LayerMask groundMask;
+
     [SerializeField] private bool isGrounded;
-    public float groundCheckDistance = 1.1f;
     private Vector3 referenceFrameVelocity = Vector3.zero;
 
     public InputAction moveAction;
@@ -24,12 +37,20 @@ public class PlayerMovement : MonoBehaviour
     public InputAction sprintAction;
 
     private Rigidbody rb;
+    private GravityReceiver gravityReceiver;
     private bool canMove = true;
-    private bool wantsToJump = false;
+
+    // --- JUMP LOGIK (Buffer & Toleranz) ---
+    private float jumpBufferCounter = 0f;
+    private float groundedCounter = 0f;
+    private float jumpBufferTime = 0.2f;
+    private float coyoteTime = 0.15f;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        gravityReceiver = GetComponent<GravityReceiver>();
+
         moveAction.Enable();
         lookAction.Enable();
         jumpAction.Enable();
@@ -43,42 +64,15 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!canMove) return;
 
-        Vector2 lookInput = lookAction.ReadValue<Vector2>();
-        rotationX -= lookInput.y * lookSpeed;
-        rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
-        playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
-        transform.rotation *= Quaternion.Euler(0, lookInput.x * lookSpeed, 0);
+        HandleCameraLook();
 
-        // Ground Check mit 'out hit'
-        RaycastHit hit;
-        isGrounded = Physics.Raycast(transform.position, -transform.up, out hit, groundCheckDistance);
-
-        if (isGrounded)
+        if (jumpAction.WasPressedThisFrame())
         {
-            Vector3 spinVelocity = Vector3.zero;
-            Vector3 orbitVelocity = Vector3.zero;
-
-            // 1. Eigendrehung des Planeten
-            PlanetSpin planetSpin = hit.collider.GetComponentInParent<PlanetSpin>();
-            if (planetSpin != null)
-            {
-                spinVelocity = planetSpin.GetSurfaceVelocity(transform.position);
-            }
-
-            // 2. Bahngeschwindigkeit um die Sonne
-            SunSystemLogic sunSystem = FindAnyObjectByType<SunSystemLogic>();
-            if (sunSystem != null && hit.collider.transform.parent != null)
-            {
-                orbitVelocity = sunSystem.GetOrbitVelocity(hit.collider.transform.parent);
-            }
-
-            // Gesamte Trägheitsgeschwindigkeit des Bodens
-            referenceFrameVelocity = spinVelocity + orbitVelocity;
-
-            if (jumpAction.WasPressedThisFrame())
-            {
-                wantsToJump = true;
-            }
+            jumpBufferCounter = jumpBufferTime;
+        }
+        else
+        {
+            jumpBufferCounter -= Time.deltaTime;
         }
     }
 
@@ -86,26 +80,139 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!canMove) return;
 
-        Vector2 input = moveAction.ReadValue<Vector2>();
-        if (input.sqrMagnitude > 1f)
+        Vector3 trueUp = gravityReceiver.GravityUp != Vector3.zero ? gravityReceiver.GravityUp : transform.up;
+
+        UpdateReferenceFrame(trueUp);
+        ApplyRigidbodyRotation(trueUp);
+
+        if (isGrounded)
         {
-            input.Normalize();
+            groundedCounter = coyoteTime;
         }
+        else
+        {
+            groundedCounter -= Time.fixedDeltaTime;
+        }
+
+        Vector2 input = moveAction.ReadValue<Vector2>();
+        if (input.sqrMagnitude > 1f) input.Normalize();
 
         Vector3 moveDirection = (transform.forward * input.y) + (transform.right * input.x);
+        moveDirection = Vector3.ProjectOnPlane(moveDirection, trueUp).normalized;
+
         float currentSpeed = sprintAction.IsPressed() ? sprintSpeed : walkSpeed;
-        Vector3 desiredMoveVelocity = moveDirection * currentSpeed;
-        Vector3 relativeVelocity = rb.linearVelocity - referenceFrameVelocity;
+        Vector3 targetHorizontalVelocity = moveDirection * currentSpeed;
 
-        float currentVerticalSpeed = Vector3.Dot(relativeVelocity, transform.up);
+        Vector3 currentVelocity = rb.linearVelocity;
+        Vector3 relativeVelocity = currentVelocity - referenceFrameVelocity;
 
-        if (wantsToJump)
+        float currentVerticalSpeed = Vector3.Dot(relativeVelocity, trueUp);
+        Vector3 currentHorizontalVelocity = relativeVelocity - (trueUp * currentVerticalSpeed);
+
+        if (isGrounded)
         {
-            currentVerticalSpeed = jumpForce;
-            wantsToJump = false;
+            currentHorizontalVelocity = targetHorizontalVelocity;
+        }
+        else
+        {
+            currentHorizontalVelocity = Vector3.MoveTowards(currentHorizontalVelocity, targetHorizontalVelocity, airControlAcceleration * Time.fixedDeltaTime);
         }
 
-        // Die referenceFrameVelocity wird hier am Ende addiert
-        rb.linearVelocity = desiredMoveVelocity + (transform.up * currentVerticalSpeed) + referenceFrameVelocity;
+        if (jumpBufferCounter > 0f && groundedCounter > 0f)
+        {
+            currentVerticalSpeed = jumpForce;
+            jumpBufferCounter = 0f;
+            groundedCounter = 0f;
+        }
+
+        rb.linearVelocity = currentHorizontalVelocity + (trueUp * currentVerticalSpeed) + referenceFrameVelocity;
+    }
+
+    private void HandleCameraLook()
+    {
+        Vector2 lookInput = lookAction.ReadValue<Vector2>();
+
+        rotationX -= lookInput.y * lookSpeed;
+        rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
+        playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
+
+        mouseXDelta += lookInput.x * lookSpeed;
+    }
+
+    private void ApplyRigidbodyRotation(Vector3 trueUp)
+    {
+        Vector3 flatForward = Vector3.ProjectOnPlane(transform.forward, trueUp).normalized;
+        if (flatForward == Vector3.zero) flatForward = transform.forward;
+
+        Quaternion uprightRotation = Quaternion.LookRotation(flatForward, trueUp);
+        Quaternion yawRotation = Quaternion.AngleAxis(mouseXDelta, trueUp);
+
+        rb.MoveRotation(yawRotation * uprightRotation);
+        mouseXDelta = 0f;
+    }
+
+    private void UpdateReferenceFrame(Vector3 trueUp)
+    {
+        // Absolute Position der Prüf-Kugel bestimmen
+        Vector3 checkPosition = transform.position + (trueUp * groundCheckOffset);
+
+        // NEU: OverlapSphere statt SphereCast. Prüft simpel und verlässlich, ob in diesem Bereich Boden ist.
+        Collider[] hitColliders = Physics.OverlapSphere(checkPosition, groundCheckRadius, groundMask);
+
+        isGrounded = hitColliders.Length > 0;
+
+        PlanetSpin activePlanetSpin = null;
+        Transform activePlanetTransform = null;
+
+        if (isGrounded)
+        {
+            // Wir nehmen den ersten getroffenen Collider (Boden), um die Planetendaten abzufragen
+            activePlanetSpin = hitColliders[0].GetComponentInParent<PlanetSpin>();
+            if (activePlanetSpin != null)
+            {
+                activePlanetTransform = activePlanetSpin.transform;
+            }
+        }
+        else if (gravityReceiver != null && gravityReceiver.DominantPlanet != null)
+        {
+            activePlanetTransform = gravityReceiver.DominantPlanet.transform;
+            activePlanetSpin = activePlanetTransform.GetComponent<PlanetSpin>();
+        }
+
+        Vector3 spinVelocity = Vector3.zero;
+        Vector3 orbitVelocity = Vector3.zero;
+
+        if (activePlanetTransform != null)
+        {
+            if (activePlanetSpin != null)
+            {
+                spinVelocity = activePlanetSpin.GetSurfaceVelocity(transform.position);
+            }
+
+            SunSystemLogic sunSystem = FindAnyObjectByType<SunSystemLogic>();
+            if (sunSystem != null)
+            {
+                orbitVelocity = sunSystem.GetOrbitVelocity(activePlanetTransform, transform.position);
+            }
+        }
+
+        referenceFrameVelocity = spinVelocity + orbitVelocity;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Vector3 currentUp = transform.up;
+        if (Application.isPlaying)
+        {
+            GravityReceiver gr = GetComponent<GravityReceiver>();
+            if (gr != null && gr.GravityUp != Vector3.zero) currentUp = gr.GravityUp;
+        }
+
+        Vector3 checkPosition = transform.position + (currentUp * groundCheckOffset);
+
+        Gizmos.color = isGrounded ? Color.green : Color.red;
+
+        // Zeichnet nur noch EINE Blase, die genau den Überprüfungsbereich darstellt
+        Gizmos.DrawWireSphere(checkPosition, groundCheckRadius);
     }
 }

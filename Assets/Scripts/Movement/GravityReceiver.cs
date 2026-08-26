@@ -13,6 +13,10 @@ public class GravityReceiver : MonoBehaviour
     [SerializeField] private float forceFromPlanetA;
     [SerializeField] private float forceFromPlanetB;
     [SerializeField] private float totalForce;
+    public PlanetGravity DominantPlanet { get; private set; }
+
+    // Neuer öffentlicher Vektor, damit das Movement-Skript weiß, wo "oben" ist
+    public Vector3 GravityUp { get; private set; }
 
     void Start()
     {
@@ -24,11 +28,22 @@ public class GravityReceiver : MonoBehaviour
         Vector3 gravityA = Vector3.zero;
         Vector3 gravityB = Vector3.zero;
 
-        // check gravity and applay
         if (planetA != null) gravityA = planetA.Attract(rb);
         if (planetB != null) gravityB = planetB.Attract(rb);
 
-        // for debugging, shows the current gravity
+        float forceA = gravityA.magnitude;
+        float forceB = gravityB.magnitude;
+
+        
+        
+
+        if (planetA != null && planetB != null)
+            DominantPlanet = forceA > forceB ? planetA : planetB;
+        else if (planetA != null) DominantPlanet = planetA;
+        else if (planetB != null) DominantPlanet = planetB;
+        else DominantPlanet = null;
+
+
         forceFromPlanetA = gravityA.magnitude;
         forceFromPlanetB = gravityB.magnitude;
         totalForce = forceFromPlanetA + forceFromPlanetB;
@@ -37,12 +52,11 @@ public class GravityReceiver : MonoBehaviour
 
         if (netGravity.sqrMagnitude > 0.001f)
         {
-           
-            Vector3 gravityUp = -netGravity.normalized;
-            Vector3 localUp = rb.transform.up;
-
-            Quaternion targetRotation = Quaternion.FromToRotation(localUp, gravityUp) * rb.rotation;
-            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, 50f * Time.fixedDeltaTime));
+            GravityUp = -netGravity.normalized;
+        }
+        else
+        {
+            GravityUp = Vector3.zero;
         }
     }
 }
