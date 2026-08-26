@@ -109,7 +109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b586514700b0d954e88d8d0060e39d07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlanetSpin
-  SpinTime: 6
+  SpinTime: 600
 --- !u!1001 &1607353055734927676
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -48,9 +48,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 61f5d6632fddcd64793df3fb93690b64, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a69645847b855874cb0fe7693751dc3f, type: 2}
     - target: {fileID: 919132149155446097, guid: 61f5d6632fddcd64793df3fb93690b64, type: 3}
       propertyPath: m_Name
-      value: PlanetA
+      value: SunFillModel
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -62,6 +66,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 61f5d6632fddcd64793df3fb93690b64, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2659794703992002285}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 61f5d6632fddcd64793df3fb93690b64, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7134570092403750066}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 61f5d6632fddcd64793df3fb93690b64, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6037812279089279593}
   m_SourcePrefab: {fileID: 100100000, guid: 61f5d6632fddcd64793df3fb93690b64, type: 3}
 --- !u!1 &470944661292843866 stripped
 GameObject:
@@ -97,9 +107,40 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 470944661292843866}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cba68f889df460c41a64e91f57899e12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlanetGravity
-  gravityStrength: 9.81
+  gravityStrength: 0
+--- !u!114 &7134570092403750066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 470944661292843866}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b586514700b0d954e88d8d0060e39d07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlanetSpin
+  SpinTime: 2000
+--- !u!114 &6037812279089279593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 470944661292843866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40cee136a3d1fe44b96dbffe97ab4bd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SunSystemLogic
+  planetA: {fileID: 0}
+  planetB: {fileID: 0}
+  DistancePlanetA: 5000
+  DistancePlanetB: 8000
+  orbitSpeedPlanetA: 0.05
+  orbitSpeedPlanetB: 0.06

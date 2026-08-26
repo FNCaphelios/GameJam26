@@ -290,10 +290,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SunFillModel
       objectReference: {fileID: 0}
-    - target: {fileID: 470944661292843866, guid: adce27a9a27841446ac31d08f918e09e, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 991619850403731936, guid: adce27a9a27841446ac31d08f918e09e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -334,65 +330,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2128476238750524047, guid: adce27a9a27841446ac31d08f918e09e, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
+    - target: {fileID: 6037812279089279593, guid: adce27a9a27841446ac31d08f918e09e, type: 3}
+      propertyPath: planetA
       value: 
-      objectReference: {fileID: 2100000, guid: a69645847b855874cb0fe7693751dc3f, type: 2}
-    - target: {fileID: 2659794703992002285, guid: adce27a9a27841446ac31d08f918e09e, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2659794703992002285, guid: adce27a9a27841446ac31d08f918e09e, type: 3}
-      propertyPath: gravityStrength
-      value: 0
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1138317619}
+    - target: {fileID: 6037812279089279593, guid: adce27a9a27841446ac31d08f918e09e, type: 3}
+      propertyPath: planetB
+      value: 
+      objectReference: {fileID: 993555047}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 470944661292843866, guid: adce27a9a27841446ac31d08f918e09e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1817579637}
-    - targetCorrespondingSourceObject: {fileID: 470944661292843866, guid: adce27a9a27841446ac31d08f918e09e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1817579643}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: adce27a9a27841446ac31d08f918e09e, type: 3}
---- !u!1 &1817579635 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 470944661292843866, guid: adce27a9a27841446ac31d08f918e09e, type: 3}
-  m_PrefabInstance: {fileID: 1817579634}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1817579637
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1817579635}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b586514700b0d954e88d8d0060e39d07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlanetSpin
-  SpinTime: 2000
---- !u!114 &1817579643
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1817579635}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40cee136a3d1fe44b96dbffe97ab4bd6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SunSystemLogic
-  planetA: {fileID: 1138317619}
-  planetB: {fileID: 993555047}
-  DistancePlanetA: 5000
-  DistancePlanetB: 8000
-  orbitSpeedPlanetA: 0.05
-  orbitSpeedPlanetB: 0.06
 --- !u!1001 &5596929464289208790
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -515,21 +465,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1180609156848629138, guid: dd70f17ea88537d43ba186f30a74a55d, type: 3}
-      propertyPath: groundCheckDistance
-      value: 0.6
-      objectReference: {fileID: 0}
     - target: {fileID: 4306403945308683764, guid: dd70f17ea88537d43ba186f30a74a55d, type: 3}
       propertyPath: m_Name
       value: Player_Object
-      objectReference: {fileID: 0}
-    - target: {fileID: 4306403945308683764, guid: dd70f17ea88537d43ba186f30a74a55d, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5211189418605155032, guid: dd70f17ea88537d43ba186f30a74a55d, type: 3}
-      propertyPath: m_Constraints
-      value: 112
       objectReference: {fileID: 0}
     - target: {fileID: 6104106513317764955, guid: dd70f17ea88537d43ba186f30a74a55d, type: 3}
       propertyPath: planetA
