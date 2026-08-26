@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public class PlanetSpin : MonoBehaviour {
+public class PlanetSpin : MonoBehaviour
+{
 
     [SerializeField] public float SpinTime = 60f;
 
@@ -11,11 +12,9 @@ public class PlanetSpin : MonoBehaviour {
         speed = 360f / SpinTime;
     }
 
-    public void FixedUpdate()
-    {
-        
-        transform.Rotate(transform.up, speed * Time.fixedDeltaTime, Space.World);
-    }
+    // ACHTUNG: FixedUpdate WURDE HIER GELÖSCHT! 
+    // Die Rotation wird nun zentral physikalisch korrekt durch SunSystemLogic.cs verwaltet,
+    // um Konflikte beim Rigidbody zu vermeiden.
 
     public Vector3 GetSurfaceVelocity(Vector3 point)
     {
