@@ -13,22 +13,25 @@ public class SunSystemLogic : MonoBehaviour
 
     void Start()
     {
-        //place Both planets, based on the distance
-       if (planetA != null)
+        if (planetA != null)
         {
-            planetA.transform.RotateAround(transform.position, Vector3.up, orbitSpeedPlanetA * Time.fixedDeltaTime);
+            Vector3 direction = (planetA.transform.position - transform.position).normalized;
+            if (direction == Vector3.zero) direction = Vector3.right;
+
+            planetA.transform.position = transform.position + (direction * DistancePlanetA);
         }
 
         if (planetB != null)
         {
-            planetB.transform.RotateAround(transform.position, Vector3.up, orbitSpeedPlanetB * Time.fixedDeltaTime);
-        }
+            Vector3 direction = (planetB.transform.position - transform.position).normalized;
+            if (direction == Vector3.zero) direction = Vector3.right;
 
+            planetB.transform.position = transform.position + (direction * DistancePlanetB);
+        }
     }
 
     void FixedUpdate()
     {
-        
         if (planetA != null)
         {
             planetA.transform.RotateAround(transform.position, Vector3.up, orbitSpeedPlanetA * Time.fixedDeltaTime);
@@ -38,5 +41,19 @@ public class SunSystemLogic : MonoBehaviour
         {
             planetB.transform.RotateAround(transform.position, Vector3.up, orbitSpeedPlanetB * Time.fixedDeltaTime);
         }
+    }
+
+    public Vector3 GetOrbitVelocity(Transform targetPlanet)
+    {
+        if (targetPlanet == planetA.transform)
+        {
+            float speedRad = orbitSpeedPlanetA * Mathf.Deg2Rad;
+            Vector3 angularVelocity = Vector3.up * speedRad;
+            Vector3 radiusVector = targetPlanet.position - transform.position;
+
+            return Vector3.Cross(angularVelocity, radiusVector);
+        }
+
+        return Vector3.zero;
     }
 }
