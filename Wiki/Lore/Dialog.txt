@@ -1,0 +1,83 @@
+NPC #1: (Suspect)
+Otaah, Scientist for A.D.H.T.
+Action: Kniet am Teleporter, untersucht etwas. Planet A, Teleporter
+
+*Opening Line*: … strange, why does the apparition device work without a sufficient energy supply?
+
+	Player Line 1: Otaah? I have some questions for you.
+	Player Line 2: Stop right there, you criminal scum!
+
+	Response to 1: Oh yes? How can I be of use?
+	Response to 2: …!?!
+
+	Player Line 3: Where were you at the time the energy was cut off?
+
+	Response to 3: I have been working on a thesis about paradoxical teleportation behaviors. For that, I have been discussing theories with Azneeh.
+
+	Player Line 4: Alright then, I will talk to Azneeh.
+
+	Response to 4*: You can find him on 'Planet B' by the apparition device for humanoid transfer. Just 'explain game mechanic'
+AI entry: Otaah has been doing something on the teleporter, he claims he was with somebody called Azneeh. I should speak to him at 'Planet B's teleporter.
+
+NPC #2: (Suspect)
+Tikai, Engineer for the AI System, hat ein Nametag mit seinem Namen
+Action: Schaut aus der Ferne das KI-Center an. Planet B, Rechencenter
+
+*Opening Line*: That seems strange…
+
+	Player Line 1: What do you mean by 'strange'?
+	Player Line 2: The only strange thing I see is you!
+	Player Line 3: Why are you standing around like that?
+
+	Response to 1: Huh? That is none of your concern! Who even are you?
+	Response to 2: Who even are you? Leave me alone!
+	Response to 3: Can't an 'Alien species name' stand around in peace anymore?
+
+	Player Line 4: I am with the press. Tell me Tikai, where were you when the power went out? (Response to 1+2)
+	Player Line 5: Only if you answer me the following question: where were you when the power went out?
+
+	Response to 4+5: I don't think I need to explain myself to you. Why do you even want to know this?
+
+	Player Line 6: I'm looking for the person responsible for the blackout and I think it might have been you.
+
+	Response to 6: 'Bullshit', why would you even think it was somebody's fault in the first place? *Turns away from player*
+
+AI entry: Tikai is very defensive and couldn't prove his innocence. Instead, he questions me and my work.
+
+NPC #3: (Witness)
+Maanulsen, Security für das Kraftwerk
+Action: Bewacht einzigen Eingang des Kraftwerkes. Planet A, Kraftwerk
+
+*Opening Line*: No unauthorized access, go away.
+
+	Player Line 1: I just want to inspect the power plant.
+
+	Response to 1: No way, my orders are to let nobody in. Now get away from here!
+
+AI entry: Maanulsen is doing his job of protecting the power plant, so how did anybody even get in?
+
+
+NPC #4: (Suspect)
+Azneeh, Scientist for A.D.E.T
+Action: Schaut auf Kabel. Planet B, Nähe des Teleporters
+
+*Opening Line*: Seems cable b-3 is intact as well…
+
+	Player Line 1: You have to be Azneeh, I have a few questions to ask, do you have a moment?
+	Player Line 2: Don't move, don't do anything stupid!
+	
+	Response to 1: Questions for me? Well, go ahead.
+	Response to 2: Whaa… I... I haven't done anything wrong. What is it you want from me?
+
+	Player Line 3: What are you doing here?
+
+	Response to 3: I'm studying the cables to investigate whether the power shortage is because of broken wiring.
+
+	Player Line 4: I see. What did you do during the start of the blackout?
+
+	Response to 4: I have been occupied with studies of Otaah's new theories. Which, if you ask me, are rather imprudent!
+
+AI entry: Azneeh has been doing something with the cables. He claims he was with Otaah, so I should investigate him next.
+
+Anmerkung: Sollten sowohl Otaah als auch Azneeh befragt worden sein, ändert sich der AI-Entry bei beiden zu:
+Both Otaah and Azneeh claim they were together during the power outage. Maybe they worked together? They both have the necessary knowledge.

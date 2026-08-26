@@ -1,0 +1,43 @@
+Stromausfall
+-> Spieler ist Reporter und möchte herausfinden, warum der Strom ausgefallen ist.
+-> Sein KI Assistent sagt ihm, dass irgendwer das Kraftwerk sabotiert hat
+-> Der Spieler geht los um die Bewohner der zwei Planeten im Sonnensystem zu befragen, wer was zum Zeitpunkt des Reaktors gemacht hat
+
+Planet A:
+POI: - Starthaus des Spieler, Reaktor zur Stromgewinnung, Stromsende-Apparat, Teleporter
+Deko: Kleines Village am Starterhaus, Stromkabel zu den einzelnen Verbrauchern des Planeten
+Gameplay-Flow: 	-Starthaus und Reaktor sollten gegenüber auf den Planeten legen, Teleporter dazwischen
+		-Reaktor wird von NPC #3 geschützt, der einen nicht rein lässt
+		-Teleporter teleportet zu Planet B
+Planet B:
+POI: - KI "Wohnort", Teleporter an lokaler gleichen Stelle wie Planet A, Stromempfänger-Apparat
+Deko: Wieder Wires zum KI-Center
+Gameplay-Flow:	-Teleporter auf anderer Seite vom Planet wie KI-Haus
+		-KI-Haus nicht betretbar, maybe sieht man selten dort Licht
+
+
+Sonnensystem:
+	Sonne		-	Planet A	-	Planet B
+
+Design Fragen: 	-Ohne Strom, woher Licht?
+		-Wie wird Strom/Spieler teleportiert?
+
+NPC #1:
+J*b:		Mechaniker
+Was macht er?:	Chillt am Teleporter und untersucht ihn
+Wichtiger Plot:	Fragt sich, warum der TP eigentlich Strom hat
+
+NPC #2:
+J*b:		KI-Designer
+Was macht er?:	Macht irgendwas auf Planet B
+Wichtiger Plot:	Ist defensiv gegenüber den Fragen des Spielers, hinterfragt warum es überhaupt Sabotage war
+
+NPC #3:
+J*b:		Türsteher beim KW
+Was macht er?:	Türstehen
+Wichtiger Plot: Muss überzeugt werden, dass die KI ihn manipuliert hat, damit man ins KW kommt
+	
+NPC #4+5:
+J*b:		Karen
+Was macht er?:	Verweist auf anderen NPC's (#1,#2), dass diese sich verdächtig verhalten
+Wichtiger Plot:	Wegweisend
