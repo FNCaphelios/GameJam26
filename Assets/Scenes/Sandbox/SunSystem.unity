@@ -246,6 +246,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &241400617 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7646938117569234895, guid: eec3a00756c4be54f9d855345fd40386, type: 3}
+  m_PrefabInstance: {fileID: 5596929464289208790}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5f7669546e499e4f9ca7a52949c1132, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::teleporter
+--- !u!114 &402522714 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4520125435190471988, guid: e127c371ab38b4a439b4d72884d5afd8, type: 3}
+  m_PrefabInstance: {fileID: 8073900127369480790}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5f7669546e499e4f9ca7a52949c1132, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::teleporter
 --- !u!1 &993555047 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1640988109942237160, guid: e127c371ab38b4a439b4d72884d5afd8, type: 3}
@@ -395,6 +417,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FinalPlanetA
       objectReference: {fileID: 0}
+    - target: {fileID: 7646938117569234895, guid: eec3a00756c4be54f9d855345fd40386, type: 3}
+      propertyPath: destinationTeleporter
+      value: 
+      objectReference: {fileID: 402522714}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -412,6 +438,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FinalPlanetB
       objectReference: {fileID: 0}
+    - target: {fileID: 4520125435190471988, guid: e127c371ab38b4a439b4d72884d5afd8, type: 3}
+      propertyPath: destinationTeleporter
+      value: 
+      objectReference: {fileID: 241400617}
     - target: {fileID: 5704480066271679916, guid: e127c371ab38b4a439b4d72884d5afd8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 8000
@@ -465,9 +495,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4057453492101559785, guid: dd70f17ea88537d43ba186f30a74a55d, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4306403945308683764, guid: dd70f17ea88537d43ba186f30a74a55d, type: 3}
       propertyPath: m_Name
       value: Player_Object
+      objectReference: {fileID: 0}
+    - target: {fileID: 4306403945308683764, guid: dd70f17ea88537d43ba186f30a74a55d, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 6104106513317764955, guid: dd70f17ea88537d43ba186f30a74a55d, type: 3}
       propertyPath: planetA
@@ -487,7 +525,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6256364433960035094, guid: dd70f17ea88537d43ba186f30a74a55d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -12.51
       objectReference: {fileID: 0}
     - target: {fileID: 6256364433960035094, guid: dd70f17ea88537d43ba186f30a74a55d, type: 3}
       propertyPath: m_LocalRotation.w
