@@ -47,7 +47,7 @@ public class aiTerminal : MonoBehaviour
                 }
                else
                 {
-                    buttonImages[i].color= Color.gray; // Set to gray if locked
+                    buttonImages[i].color = Color.black;
                 }
             }
             else
