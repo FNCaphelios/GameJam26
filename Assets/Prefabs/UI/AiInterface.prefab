@@ -116,6 +116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1329caea8c3064ba1e45466ed91fdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::aiTerminal
+  terminalPanel: {fileID: 2839479625873710214}
   nameText: {fileID: 2583630932975621547}
   descriptionText: {fileID: 4891909184385087275}
   buttonImages:
@@ -144,6 +145,7 @@ MonoBehaviour:
       with Otaah, so I should investigate him next.
     lockedText: This NPC is locked.
     isUnlocked: 0
+  isOpen: 0
 --- !u!1 &1836325007387246620
 GameObject:
   m_ObjectHideFlags: 0
