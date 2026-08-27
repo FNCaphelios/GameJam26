@@ -61,7 +61,7 @@ public class aiTerminal : MonoBehaviour
     // Select an NPC and update the UI with its information
     public void SelectNPC(int index)
     {
-        if (index < 0 || index >= npcs.Length)
+        if (index >= 0 && index < npcs.Length)
         {
             NPCData npc = npcs[index];
 
