@@ -20,19 +20,23 @@ public class ChatBubble :MonoBehaviour
         textMeshPro = transform.Find("Text").GetComponent<TextMeshPro>();
     }
 
-    private void Start()
-    {
-        Setup("Hello World! sksksksk sksksksk skskskskksslllsösösös");
-    }
     private void Setup(string text)
     {
         textMeshPro.SetText(text);
         textMeshPro.ForceMeshUpdate();
         Vector2 textSize = textMeshPro.GetRenderedValues(false);
-        Vector2 offset = new Vector2(8f, 2f);
-        backgroundSpriteRenderer.size = textSize + offset;
+        Vector2 padding = new Vector2(4f, 2f);
+        Vector2 minSize = new Vector2(6f, 3f);
 
-        Vector3 leftshift = new Vector3(-12f, 0f);
-        backgroundSpriteRenderer.transform.localPosition = new Vector3(backgroundSpriteRenderer.size.x / 2f, 0f) + leftshift;
+        Vector2 finalSize = new Vector2(
+            Mathf.Max(textSize.x + padding.x, minSize.x),
+            Mathf.Max(textSize.y + padding.y, minSize.y)
+        );
+
+        backgroundSpriteRenderer.size = finalSize;
+
+        backgroundSpriteRenderer.transform.localPosition = Vector3.zero;
+
+        textMeshPro.transform.localPosition = Vector3.zero;
     }
 }

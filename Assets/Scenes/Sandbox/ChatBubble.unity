@@ -372,6 +372,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC
       objectReference: {fileID: 0}
+    - target: {fileID: 5609450933411673430, guid: 81a2489cecb38de48be3e06f1b81e219, type: 3}
+      propertyPath: m_AngularDamping
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6036104508132258476, guid: 81a2489cecb38de48be3e06f1b81e219, type: 3}
       propertyPath: m_LocalPosition.x
       value: 165.01747
