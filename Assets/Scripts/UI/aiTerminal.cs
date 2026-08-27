@@ -30,8 +30,21 @@ public class aiTerminal : MonoBehaviour
 
     private void Start()
     {
+        // unlock the cursor and make it visible when the terminal is opened
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
         UpdateButtonsVisuals();
         SelectNPC(0); // Select the first NPC by default
+    }
+
+    // Ensure that the button visuals are updated in the editor when changes are made
+    private void OnValidate()
+    {
+        if (buttonImages != null && buttonImages.Length > 0)
+        {
+            UpdateButtonsVisuals();
+        }
     }
 
     // Update the button visuals based on the NPCs' unlocked status
@@ -86,6 +99,7 @@ public class aiTerminal : MonoBehaviour
         {
             npcs[index].isUnlocked = true;
             UpdateButtonsVisuals();
+            SelectNPC(index);
         }
     }
 }
