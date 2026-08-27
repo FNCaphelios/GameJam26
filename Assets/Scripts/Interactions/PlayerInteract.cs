@@ -15,6 +15,11 @@ public class PlayerInteract :MonoBehaviour
                 {
                     npcInteractable.Interact();
                 }
+
+                if (collider.TryGetComponent(out TerminalInteractable terminalInteractable))
+                {
+                    terminalInteractable.Interact();
+                }
             }
         }
     }

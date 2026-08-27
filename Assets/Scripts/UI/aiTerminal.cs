@@ -1,10 +1,14 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class aiTerminal : MonoBehaviour 
 {
     public static aiTerminal Instance;
+
+    [Header("The viewable terminal panel")]
+    public GameObject terminalPanel;
 
     [Header("UI elements")]
     public TextMeshProUGUI nameText;
@@ -15,6 +19,8 @@ public class aiTerminal : MonoBehaviour
 
     [Header("npc data")]
     public NPCData[] npcs = new NPCData[4];
+
+    public bool isOpen = false;
 
     private void Awake()
     {
@@ -27,15 +33,56 @@ public class aiTerminal : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
+    
+    // sets panel to close on start
     private void Start()
     {
-        // unlock the cursor and make it visible when the terminal is opened
+        CloseTerminal();
+    }
+
+    private void Update()
+    {
+        if (isOpen)
+        {
+            if (Cursor.lockState != CursorLockMode.None || !Cursor.visible)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+
+            if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+            {
+                CloseTerminal();
+            }
+        }
+    }
+
+    public void OpenTerminal()
+    {
+        isOpen = true;
+        if (terminalPanel != null) terminalPanel.SetActive(true);
+
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
+        PlayerMovement player = FindAnyObjectByType<PlayerMovement>();
+        if (player != null) player.canMove = false;
+
         UpdateButtonsVisuals();
         SelectNPC(0); // Select the first NPC by default
+    }
+
+    public void CloseTerminal()
+    {
+        isOpen = false;
+        if (terminalPanel != null) terminalPanel.SetActive(false);
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+
+        PlayerMovement player = FindAnyObjectByType<PlayerMovement>();
+        if (player != null) player.canMove = true;
     }
 
     // Ensure that the button visuals are updated in the editor when changes are made
