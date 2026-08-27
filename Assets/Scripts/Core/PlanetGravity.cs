@@ -4,19 +4,29 @@ public class PlanetGravity : MonoBehaviour
 {
     public float gravityStrength = 9.81f;
 
-    public void Attract(Rigidbody body)
+    public Vector3 Attract(Rigidbody body)
     {
-        // 1. Richtungsvektoren bestimmen
-        Vector3 gravityUp = (body.position - transform.position).normalized;
-        Vector3 localUp = body.transform.up;
+        // body.position = Rigidbody of the Player
+        // transform.position = Object of the Script (Planet)
+        // Player - Planet Vector
+        Vector3 distanceV = body.position - transform.position;
 
-        // 2. Gravitation anwenden (zieht den Spieler an)
-        body.AddForce(-gravityUp * gravityStrength, ForceMode.Acceleration);
+        // Player-Planet distance
+        float distanceSquared = distanceV.sqrMagnitude;
 
-        // 3. Spieler aufrichten, sodass die Füße zum Planeten zeigen
-        Quaternion targetRotation = Quaternion.FromToRotation(localUp, gravityUp) * body.rotation;
+        if (distanceSquared < 0.0001f) return Vector3.zero;
 
-        // Slerp sorgt für eine weiche Drehung, damit die Kamera nicht ruckelt
-        body.MoveRotation(Quaternion.Slerp(body.rotation, targetRotation, 50f * Time.fixedDeltaTime));
+
+        float currentGravity = gravityStrength / distanceSquared;
+        Vector3 gravityUp = distanceV.normalized;
+        Vector3 appliedForce = -gravityUp * currentGravity;
+
+        // Gravity force for the Player 
+        // gravity Strength = Gravity
+        // ForceMode.Acceleration: implements Force directly onto the physical velocity. !Mass of Body is unimportant atm!
+        //body.AddForce(-gravityUp * gravityStrength, ForceMode.Acceleration);
+        body.AddForce(appliedForce, ForceMode.Acceleration);
+
+        return appliedForce;
     }
 }
