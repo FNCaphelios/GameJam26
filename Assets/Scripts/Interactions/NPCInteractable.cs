@@ -1,36 +1,34 @@
 using UnityEngine;
+using TMPro;
 
 public class NPCInteractable : MonoBehaviour
 {
+    [Header("UI References")]
     [SerializeField] private GameObject dialogueCanvas;
-    private bool playerInRange;
+    [SerializeField] private TextMeshProUGUI dialogueText;
+
+    [Header("Dialogue Content")]
+    [TextArea(2, 5)]
+    [SerializeField] private string[] dialogueLines; // Add multiple lines in the Inspector!
+
+    private int currentLineIndex = 0;
+    private bool isDialogueActive = false;
+    private bool playerInRange = false;
 
     private void Start()
     {
-        if (dialogueCanvas != null)
-        {
-            dialogueCanvas.SetActive(false);
-        }
-        else
-        {
-            Debug.LogError("Dialogue Canvas is NOT assigned on " + gameObject.name);
-        }
+        if (dialogueCanvas != null) dialogueCanvas.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
-        {
-            Debug.Log("Player entered NPC trigger range!");
-            playerInRange = true;
-        }
+        if (other.CompareTag("Player")) playerInRange = true;
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Player left NPC trigger range!");
             playerInRange = false;
             EndDialogue();
         }
@@ -38,27 +36,57 @@ public class NPCInteractable : MonoBehaviour
 
     public void Interact()
     {
-        if (playerInRange)
+        if (!playerInRange) return;
+
+        if (!isDialogueActive)
         {
-            Debug.Log("Interact called successfully!");
             StartDialogue();
         }
         else
         {
-            Debug.LogWarning("Interact called, but player is NOT in range!");
+            AdvanceDialogue();
         }
     }
 
-    public void StartDialogue()
+    private void StartDialogue()
     {
-        if (dialogueCanvas != null)
+        if (dialogueLines == null || dialogueLines.Length == 0) return;
+
+        isDialogueActive = true;
+        currentLineIndex = 0;
+
+        if (dialogueCanvas != null) dialogueCanvas.SetActive(true);
+        DisplayCurrentLine();
+    }
+
+    private void AdvanceDialogue()
+    {
+        currentLineIndex++;
+
+        // Check if there are more lines left
+        if (currentLineIndex < dialogueLines.Length)
         {
-            dialogueCanvas.SetActive(true);
+            DisplayCurrentLine();
+        }
+        else
+        {
+            EndDialogue(); // Closed canvas when reaching the end of the text array
+        }
+    }
+
+    private void DisplayCurrentLine()
+    {
+        if (dialogueText != null)
+        {
+            dialogueText.text = dialogueLines[currentLineIndex];
         }
     }
 
     public void EndDialogue()
     {
+        isDialogueActive = false;
+        currentLineIndex = 0;
+
         if (dialogueCanvas != null)
         {
             dialogueCanvas.SetActive(false);
