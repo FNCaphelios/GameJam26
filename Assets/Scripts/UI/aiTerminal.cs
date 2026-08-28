@@ -17,6 +17,9 @@ public class aiTerminal : MonoBehaviour
     [Header("Button Images")]
     public Image[] buttonImages;
 
+    [Header("Audio")]
+    public AudioClip music;
+
     [Header("npc data")]
     public NPCData[] npcs = new NPCData[4];
 
@@ -71,6 +74,11 @@ public class aiTerminal : MonoBehaviour
         {
             introDialogPanel.SetActive(true);
             hasSeenIntroDialog = true;
+
+            if(AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayMusicOnceWithFade(music, 2f, 1f);
+            }
         }
         else
         {

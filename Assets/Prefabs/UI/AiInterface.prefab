@@ -124,6 +124,7 @@ MonoBehaviour:
   - {fileID: 8046222581292182444}
   - {fileID: 3260855088979209371}
   - {fileID: 8483840616155112445}
+  music: {fileID: 8300000, guid: 7b7bcaae4e51ca64db0653959bac4807, type: 3}
   npcs:
   - npcName: Maanulsen
     description: '[Human Input] Maanulsen is doing his job of protecting the power
@@ -321,7 +322,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7629262263142808209
 RectTransform:
   m_ObjectHideFlags: 0
