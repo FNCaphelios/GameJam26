@@ -17,8 +17,15 @@ public class aiTerminal : MonoBehaviour
     [Header("Button Images")]
     public Image[] buttonImages;
 
+    [Header("Audio")]
+    public AudioClip music;
+
     [Header("npc data")]
     public NPCData[] npcs = new NPCData[4];
+
+    [Header("Intro Dialog Panel")]
+    public GameObject introDialogPanel;
+    public bool hasSeenIntroDialog = false;
 
     public bool isOpen = false;
 
@@ -63,8 +70,33 @@ public class aiTerminal : MonoBehaviour
         PlayerMovement player = FindAnyObjectByType<PlayerMovement>();
         if (player != null) player.canMove = false;
 
+        if(!hasSeenIntroDialog && introDialogPanel != null)
+        {
+            introDialogPanel.SetActive(true);
+            hasSeenIntroDialog = true;
+
+            if(AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayMusicOnceWithFade(music, 2f, 1f);
+            }
+        }
+        else
+        {
+            if(introDialogPanel != null)
+            {
+                UpdateButtonsVisuals();
+                SelectNPC(0);
+            }
+        }
+    }
+
+    public void FinishIntroDialog()
+    {
+        hasSeenIntroDialog = true;
+        if (introDialogPanel != null) introDialogPanel.SetActive(false);
+
         UpdateButtonsVisuals();
-        SelectNPC(0); // Select the first NPC by default
+        SelectNPC(0);
     }
 
     public void CloseTerminal()
