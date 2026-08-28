@@ -99,8 +99,11 @@ public class NPCInteractable : MonoBehaviour
     private void DisplayOptions()
     {
         // Uses the inspector variable instead of a hardcoded string
-        if (dialogueText != null) dialogueText.text = questionPrompt;
-
+        if (dialogueText != null)
+        {
+            dialogueText.gameObject.SetActive(true);
+            dialogueText.text = questionPrompt;
+        }
         for (int i = 0; i < optionSlots.Length; i++)
         {
             if (i < dialogueOptions.Length)
