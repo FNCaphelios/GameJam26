@@ -131,7 +131,13 @@ public class PlayerInteract : MonoBehaviour
             }
 
             //interact with NPC if the player is not holding an item and the NPC is interactable
-            if (col.TryGetComponent(out NPCInteractable npc))
+            NPCInteractable npc = col.GetComponent<NPCInteractable>();
+            if (npc == null)
+            {
+                npc = col.GetComponentInParent<NPCInteractable>();
+            }
+
+            if (npc != null)
             {
                 npc.Interact();
                 return;
