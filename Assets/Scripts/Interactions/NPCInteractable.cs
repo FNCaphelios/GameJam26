@@ -1,24 +1,36 @@
 using UnityEngine;
 
-public class NPCInteractable :MonoBehaviour
+public class NPCInteractable : MonoBehaviour
 {
     [SerializeField] private GameObject dialogueCanvas;
-    private bool playerInRange; // Fixed: now used below!
+    private bool playerInRange;
 
     private void Start()
     {
-        if (dialogueCanvas != null) dialogueCanvas.SetActive(false);
+        if (dialogueCanvas != null)
+        {
+            dialogueCanvas.SetActive(false);
+        }
+        else
+        {
+            Debug.LogError("Dialogue Canvas is NOT assigned on " + gameObject.name);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player")) playerInRange = true;
+        if (other.CompareTag("Player"))
+        {
+            Debug.Log("Player entered NPC trigger range!");
+            playerInRange = true;
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
+            Debug.Log("Player left NPC trigger range!");
             playerInRange = false;
             EndDialogue();
         }
@@ -26,10 +38,14 @@ public class NPCInteractable :MonoBehaviour
 
     public void Interact()
     {
-        // Only open dialogue if the player is actually in range
         if (playerInRange)
         {
+            Debug.Log("Interact called successfully!");
             StartDialogue();
+        }
+        else
+        {
+            Debug.LogWarning("Interact called, but player is NOT in range!");
         }
     }
 
@@ -49,4 +65,3 @@ public class NPCInteractable :MonoBehaviour
         }
     }
 }
-
