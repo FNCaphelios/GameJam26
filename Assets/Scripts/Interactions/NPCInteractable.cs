@@ -9,35 +9,35 @@ public class NPCInteractable : MonoBehaviour
 
     [Header("Dialogue Content")]
     [TextArea(2, 5)]
-    [SerializeField] private string[] dialogueLines; // Add multiple lines in the Inspector!
+    [SerializeField] private string[] dialogueLines;
+
+    [Header("Camera Alignment")]
+    [SerializeField] private Transform npcFocusPoint; // Drag the NPC's Head/Eyes transform here
+    [SerializeField] private float focusSpeed = 5f;
 
     private int currentLineIndex = 0;
     private bool isDialogueActive = false;
-    private bool playerInRange = false;
+    private Camera playerCam;
+    private Quaternion originalCamRotation;
 
     private void Start()
     {
         if (dialogueCanvas != null) dialogueCanvas.SetActive(false);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void Update()
     {
-        if (other.CompareTag("Player")) playerInRange = true;
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
+        // Smoothly look at the NPC focus point while dialogue is open
+        if (isDialogueActive && playerCam != null && npcFocusPoint != null)
         {
-            playerInRange = false;
-            EndDialogue();
+            Vector3 direction = npcFocusPoint.position - playerCam.transform.position;
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            playerCam.transform.rotation = Quaternion.Slerp(playerCam.transform.rotation, targetRotation, Time.deltaTime * focusSpeed);
         }
     }
 
     public void Interact()
     {
-        if (!playerInRange) return;
-
         if (!isDialogueActive)
         {
             StartDialogue();
@@ -52,6 +52,12 @@ public class NPCInteractable : MonoBehaviour
     {
         if (dialogueLines == null || dialogueLines.Length == 0) return;
 
+        playerCam = Camera.main;
+        if (playerCam != null)
+        {
+            originalCamRotation = playerCam.transform.rotation;
+        }
+
         isDialogueActive = true;
         currentLineIndex = 0;
 
@@ -63,14 +69,13 @@ public class NPCInteractable : MonoBehaviour
     {
         currentLineIndex++;
 
-        // Check if there are more lines left
         if (currentLineIndex < dialogueLines.Length)
         {
             DisplayCurrentLine();
         }
         else
         {
-            EndDialogue(); // Closed canvas when reaching the end of the text array
+            EndDialogue();
         }
     }
 
