@@ -38,7 +38,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Dirt_Norm:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: cf1c0e4dab25eae47b653cb7e0790590, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Dirt_Tex:
@@ -46,7 +46,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Grass_Norm:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 48abc55ad6e38784d8edcebc6f0bf1c0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Grass_Tex:
@@ -69,6 +69,7 @@ Material:
     m_Floats:
     - _QueueControl: 0
     - _QueueOffset: 0
-    m_Colors: []
+    m_Colors:
+    - _Texture_Tiling: {r: 20, g: 20, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
