@@ -49,11 +49,6 @@ public class aiTerminal : MonoBehaviour
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
             }
-
-            if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
-            {
-                CloseTerminal();
-            }
         }
     }
 
