@@ -1,9 +1,19 @@
 using UnityEngine;
+using TMPro;
 
-public class NPCInteractable :MonoBehaviour
+public class NPCInteractable : MonoBehaviour
 {
+    [Header("UI References")]
     [SerializeField] private GameObject dialogueCanvas;
-    private bool playerInRange; // Fixed: now used below!
+    [SerializeField] private TextMeshProUGUI dialogueText;
+
+    [Header("Dialogue Content")]
+    [TextArea(2, 5)]
+    [SerializeField] private string[] dialogueLines; // Add multiple lines in the Inspector!
+
+    private int currentLineIndex = 0;
+    private bool isDialogueActive = false;
+    private bool playerInRange = false;
 
     private void Start()
     {
@@ -26,27 +36,60 @@ public class NPCInteractable :MonoBehaviour
 
     public void Interact()
     {
-        // Only open dialogue if the player is actually in range
-        if (playerInRange)
+        if (!playerInRange) return;
+
+        if (!isDialogueActive)
         {
             StartDialogue();
         }
+        else
+        {
+            AdvanceDialogue();
+        }
     }
 
-    public void StartDialogue()
+    private void StartDialogue()
     {
-        if (dialogueCanvas != null)
+        if (dialogueLines == null || dialogueLines.Length == 0) return;
+
+        isDialogueActive = true;
+        currentLineIndex = 0;
+
+        if (dialogueCanvas != null) dialogueCanvas.SetActive(true);
+        DisplayCurrentLine();
+    }
+
+    private void AdvanceDialogue()
+    {
+        currentLineIndex++;
+
+        // Check if there are more lines left
+        if (currentLineIndex < dialogueLines.Length)
         {
-            dialogueCanvas.SetActive(true);
+            DisplayCurrentLine();
+        }
+        else
+        {
+            EndDialogue(); // Closed canvas when reaching the end of the text array
+        }
+    }
+
+    private void DisplayCurrentLine()
+    {
+        if (dialogueText != null)
+        {
+            dialogueText.text = dialogueLines[currentLineIndex];
         }
     }
 
     public void EndDialogue()
     {
+        isDialogueActive = false;
+        currentLineIndex = 0;
+
         if (dialogueCanvas != null)
         {
             dialogueCanvas.SetActive(false);
         }
     }
 }
-
