@@ -17,6 +17,7 @@ public class NPCInteractable : MonoBehaviour
     [SerializeField] private TextMeshProUGUI[] optionSlots;   // Array of 2–4 choice UI text slots
 
     [Header("Dialogue Content")]
+    [SerializeField] private string questionPrompt = "Select a question:"; // Editable in the Inspector
     [SerializeField] private DialogueOption[] dialogueOptions;
 
     [Header("Camera Alignment")]
@@ -97,7 +98,8 @@ public class NPCInteractable : MonoBehaviour
 
     private void DisplayOptions()
     {
-        if (dialogueText != null) dialogueText.text = "Select a question:";
+        // Uses the inspector variable instead of a hardcoded string
+        if (dialogueText != null) dialogueText.text = questionPrompt;
 
         for (int i = 0; i < optionSlots.Length; i++)
         {
