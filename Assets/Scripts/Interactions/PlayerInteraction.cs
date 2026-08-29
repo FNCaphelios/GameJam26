@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem; 
 
+
 public class PlayerInteraction : MonoBehaviour
 {
     [Header("Einstellungen")]
@@ -12,39 +13,48 @@ public class PlayerInteraction : MonoBehaviour
     public Camera playerCamera;
     public TextMeshProUGUI interactionText;
 
+    
+
     void Update()
     {
+        
         interactionText.text = "";
 
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
         RaycastHit hit;
 
+
+
         if (Physics.Raycast(ray, out hit, interactionDistance))
         {
+
+            NPCInteractable npc = hit.collider.GetComponent<NPCInteractable>();
+
             // --- BEDINGUNG 1: NPC ---
-            if (hit.collider.CompareTag("NPC"))
+            if (npc != null && !npc.isDialogueActive)
             {
                 interactionText.text = "Press E to interact";
 
-                // NEU: Abfrage über das New Input System
-                if (Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
-                {
-                    Debug.Log("Du interagierst mit dem NPC!");
-                    // hasSpokenWithM = true;
-                }
+                
             }
-            // --- BEDINGUNG 2: Item ---
-            else if (hit.collider.CompareTag("Item") && hasSpokenWithM == true)
-            {
-                interactionText.text = "Press E to pickup";
 
-                // NEU: Abfrage über das New Input System
-                if (Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
+            // --- BEDINGUNG 2: Item ---
+            else if (hit.collider.CompareTag("Item"))
+            {
+
+                if (hit.collider.CompareTag("Item") && hasSpokenWithM == true)
                 {
-                    Debug.Log("Item aufgehoben!");
-                    // hit.collider.gameObject.SetActive(false);
+                    interactionText.text = "Press E to pickup";
                 }
+                else
+                {
+                    interactionText.text = "Press Tab to open Terminal";
+                }
+
+
+            }
+            
             }
         }
-    }
+    
 }

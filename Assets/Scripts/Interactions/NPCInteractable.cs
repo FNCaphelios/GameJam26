@@ -45,10 +45,12 @@ public class NPCInteractable : MonoBehaviour
     [Header("Camera Alignment")]
     [SerializeField] private Transform npcFocusPoint;
     [SerializeField] private float focusSpeed = 5f;
+    [SerializeField] private bool maanulsen = false;
 
     private int currentNodeID = 0;
     private int selectedOptionIndex = 0;
     public bool isDialogueActive = false;
+   
     private Camera playerCam;
 
     private void Start()
@@ -61,6 +63,8 @@ public class NPCInteractable : MonoBehaviour
         {
             agent = gameObject.AddComponent<NavMeshAgent>();
         }
+
+        
     }
 
     private void Update()
@@ -267,6 +271,16 @@ public class NPCInteractable : MonoBehaviour
         if (wasItemDialogueActive && runTargetPoint != null)
         {
             StartRunningToTarget();
+        }
+
+        if (maanulsen)
+        {
+            PlayerInteraction playerInteraction = FindAnyObjectByType<PlayerInteraction>();
+            if (playerInteraction != null)
+            {
+
+                playerInteraction.hasSpokenWithM = true;
+            }
         }
     }
     private void StartRunningToTarget()
