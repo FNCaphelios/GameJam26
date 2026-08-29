@@ -1,12 +1,22 @@
 using UnityEngine;
 using TMPro;
+using System.Collections.Generic;
 
 [System.Serializable]
-public struct DialogueOption
+public struct PlayerChoice
 {
-    public string optionText;       // The text choice shown to the player
     [TextArea(2, 4)]
-    public string npcResponse;      // What the NPC says after selecting this option
+    public string choiceText;   // Text shown to the player
+    public int nextNodeID;      // ID of the node to jump to (-1 ends dialogue)
+}
+
+[System.Serializable]
+public class DialogueNode
+{
+    public int nodeID;                  // Unique identifier for this step
+    [TextArea(3, 6)]
+    public string npcResponseText;     // What the NPC says at this node
+    public List<PlayerChoice> choices;  // Choices available to the player
 }
 
 public class NPCInteractable : MonoBehaviour
@@ -14,19 +24,18 @@ public class NPCInteractable : MonoBehaviour
     [Header("UI References")]
     [SerializeField] private GameObject dialogueCanvas;
     [SerializeField] private TextMeshProUGUI dialogueText;    // NPC response text area
-    [SerializeField] private TextMeshProUGUI[] optionSlots;   // Array of 2–4 choice UI text slots
+    [SerializeField] private TextMeshProUGUI[] optionSlots;   // Array of choice UI text slots
 
-    [Header("Dialogue Content")]
-    [SerializeField] private string questionPrompt = "Select a question:"; // Editable in the Inspector
-    [SerializeField] private DialogueOption[] dialogueOptions;
+    [Header("Dialogue Tree")]
+    [SerializeField] private List<DialogueNode> dialogueNodes = new List<DialogueNode>();
 
     [Header("Camera Alignment")]
     [SerializeField] private Transform npcFocusPoint;
     [SerializeField] private float focusSpeed = 5f;
 
+    private int currentNodeID = 0;
     private int selectedOptionIndex = 0;
     private bool isDialogueActive = false;
-    private bool showingResponse = false;
     private Camera playerCam;
 
     private void Start()
@@ -45,8 +54,9 @@ public class NPCInteractable : MonoBehaviour
             playerCam.transform.rotation = Quaternion.Slerp(playerCam.transform.rotation, targetRotation, Time.deltaTime * focusSpeed);
         }
 
-        // Navigate options using keyboard when choices are displayed
-        if (!showingResponse && dialogueOptions.Length > 0)
+        // Navigate options using keyboard
+        DialogueNode currentNode = GetNodeByID(currentNodeID);
+        if (currentNode != null && currentNode.choices.Count > 0)
         {
             if (UnityEngine.InputSystem.Keyboard.current != null)
             {
@@ -70,43 +80,59 @@ public class NPCInteractable : MonoBehaviour
         {
             StartDialogue();
         }
-        else if (showingResponse)
-        {
-            // Second press of E returns to choice menu or ends dialogue
-            EndDialogue();
-        }
         else
         {
-            // Pressing E selects the highlighted choice
-            SelectOption(selectedOptionIndex);
+            DialogueNode currentNode = GetNodeByID(currentNodeID);
+
+            // If there are options to choose, pick the current selection
+            if (currentNode != null && currentNode.choices.Count > 0)
+            {
+                SelectOption(selectedOptionIndex);
+            }
+            else
+            {
+                // Terminal node (no choices left) — press E to exit
+                EndDialogue();
+            }
         }
     }
 
     private void StartDialogue()
     {
-        if (dialogueOptions == null || dialogueOptions.Length == 0) return;
+        if (dialogueNodes == null || dialogueNodes.Count == 0) return;
 
         playerCam = Camera.main;
         isDialogueActive = true;
-        showingResponse = false;
-        selectedOptionIndex = 0;
+        currentNodeID = 0; // Starts at Node 0 (Opening Line)
 
         if (dialogueCanvas != null) dialogueCanvas.SetActive(true);
 
-        DisplayOptions();
+        DisplayCurrentNode();
     }
 
-    private void DisplayOptions()
+    private void DisplayCurrentNode()
     {
-        // Uses the inspector variable instead of a hardcoded string
+        DialogueNode currentNode = GetNodeByID(currentNodeID);
+
+        if (currentNode == null)
+        {
+            EndDialogue();
+            return;
+        }
+
+        selectedOptionIndex = 0;
+
+        // 1. Set NPC Text
         if (dialogueText != null)
         {
             dialogueText.gameObject.SetActive(true);
-            dialogueText.text = questionPrompt;
+            dialogueText.text = currentNode.npcResponseText;
         }
+
+        // 2. Display Choice Slots
         for (int i = 0; i < optionSlots.Length; i++)
         {
-            if (i < dialogueOptions.Length)
+            if (i < currentNode.choices.Count)
             {
                 optionSlots[i].gameObject.SetActive(true);
                 UpdateOptionVisual(i);
@@ -120,9 +146,12 @@ public class NPCInteractable : MonoBehaviour
 
     private void ChangeSelection(int direction)
     {
-        selectedOptionIndex = Mathf.Clamp(selectedOptionIndex + direction, 0, dialogueOptions.Length - 1);
+        DialogueNode currentNode = GetNodeByID(currentNodeID);
+        if (currentNode == null || currentNode.choices.Count == 0) return;
 
-        for (int i = 0; i < dialogueOptions.Length; i++)
+        selectedOptionIndex = Mathf.Clamp(selectedOptionIndex + direction, 0, currentNode.choices.Count - 1);
+
+        for (int i = 0; i < currentNode.choices.Count; i++)
         {
             UpdateOptionVisual(i);
         }
@@ -132,38 +161,47 @@ public class NPCInteractable : MonoBehaviour
     {
         if (index >= optionSlots.Length) return;
 
-        // Add Outer Wilds style selection arrow [>] to highlighted item
+        DialogueNode currentNode = GetNodeByID(currentNodeID);
+        if (currentNode == null || index >= currentNode.choices.Count) return;
+
+        // Highlight active item with Outer Wilds yellow style
         if (index == selectedOptionIndex)
         {
-            optionSlots[index].text = $"> <color=#FF9900>{dialogueOptions[index].optionText}</color>";
+            optionSlots[index].text = $"> <color=#FF9900>{currentNode.choices[index].choiceText}</color>";
         }
         else
         {
-            optionSlots[index].text = $"  <color=#CCCCCC>{dialogueOptions[index].optionText}</color>";
+            optionSlots[index].text = $"  <color=#CCCCCC>{currentNode.choices[index].choiceText}</color>";
         }
     }
 
     private void SelectOption(int index)
     {
-        showingResponse = true;
+        DialogueNode currentNode = GetNodeByID(currentNodeID);
+        if (currentNode == null || index >= currentNode.choices.Count) return;
 
-        // Hide option choices
-        foreach (var slot in optionSlots)
-        {
-            if (slot != null) slot.gameObject.SetActive(false);
-        }
+        int nextID = currentNode.choices[index].nextNodeID;
 
-        // Display NPC's direct response to the selected option
-        if (dialogueText != null)
+        if (nextID < 0)
         {
-            dialogueText.text = dialogueOptions[index].npcResponse;
+            EndDialogue();
         }
+        else
+        {
+            currentNodeID = nextID;
+            DisplayCurrentNode();
+        }
+    }
+
+    private DialogueNode GetNodeByID(int id)
+    {
+        return dialogueNodes.Find(node => node.nodeID == id);
     }
 
     public void EndDialogue()
     {
         isDialogueActive = false;
-        showingResponse = false;
+        currentNodeID = 0;
         selectedOptionIndex = 0;
 
         if (dialogueCanvas != null) dialogueCanvas.SetActive(false);
