@@ -11,12 +11,12 @@ GameObject:
   - component: {fileID: 1231489519519944573}
   - component: {fileID: 2790255552470794456}
   - component: {fileID: 97968607069582354}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SM_Rock_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &1231489519519944573
 Transform:
@@ -26,9 +26,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1899658803233297863}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.0000001, y: 1, z: 1.0000001}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8268500012209017838}
@@ -89,6 +89,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &2798717455308155955
 GameObject:
@@ -99,12 +100,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8268500012209017838}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Collisions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &8268500012209017838
 Transform:
@@ -132,12 +133,12 @@ GameObject:
   m_Component:
   - component: {fileID: 844612003492241760}
   - component: {fileID: 8868739298996739650}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: UCX_SM_Rock_02_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &844612003492241760
 Transform:
