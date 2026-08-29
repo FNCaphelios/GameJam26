@@ -38,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody rb;
     private GravityReceiver gravityReceiver;
-    private bool canMove = true;
+    public bool canMove = true;
 
     // --- JUMP LOGIK (Buffer & Toleranz) ---
     private float jumpBufferCounter = 0f;

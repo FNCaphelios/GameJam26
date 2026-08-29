@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &543095976081676907
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 445202857274796588}
+  m_Layer: 0
+  m_Name: HoldPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &445202857274796588
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 543095976081676907}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.248, y: 0.565, z: 0.473}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8082279987264362683}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2106135481854035545
 GameObject:
   m_ObjectHideFlags: 0
@@ -36,6 +67,7 @@ Transform:
   m_Children:
   - {fileID: 2041429458794163950}
   - {fileID: 7814576657677014274}
+  - {fileID: 445202857274796588}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &7973844929124985205
@@ -106,8 +138,13 @@ MonoBehaviour:
   lookSpeed: 0.15
   lookXLimit: 90
   jumpForce: 5
+  airControlAcceleration: 15
+  groundCheckRadius: 0.3
+  groundCheckOffset: -0.1
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 0
   isGrounded: 0
-  groundCheckDistance: 2.1
   moveAction:
     m_Name: Move
     m_Type: 0
@@ -204,6 +241,7 @@ MonoBehaviour:
     m_SingletonActionBindings: []
     m_Flags: 0
     m_Priority: 0
+  canMove: 1
 --- !u!114 &8236855113906611446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,6 +254,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60f506b2a8a366b4295be56692ef61c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GravityReceiver
+  planetA: {fileID: 0}
+  planetB: {fileID: 0}
+  forceFromPlanetA: 0
+  forceFromPlanetB: 0
+  totalForce: 0
 --- !u!114 &-3946952871019254264
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,6 +271,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebb185052e30f4949b2cbfa226d15101, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteract
+  holdPoint: {fileID: 0}
+  item: {fileID: 0}
+  interactRange: 2.5
 --- !u!1 &3962648151081408553
 GameObject:
   m_ObjectHideFlags: 0
