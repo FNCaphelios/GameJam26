@@ -560,7 +560,7 @@ MonoBehaviour:
     - choiceText: Alright then, I will talk to Azneeh.
       nextNodeID: 4
   - nodeID: 4
-    npcResponseText: 'Otaah: You can find him on ''Planet B'' by the apparition device
+    npcResponseText: 'Otaah: You can find him on Planet Sigma by the apparition device
       for humanoid transfer. Just ''explain game mechanic'''
     choices: []
   npcFocusPoint: {fileID: 0}
