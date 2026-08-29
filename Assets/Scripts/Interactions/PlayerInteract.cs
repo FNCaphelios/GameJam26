@@ -9,7 +9,7 @@ public class PlayerInteract : MonoBehaviour
 
     private void Start()
     {
-        //automatically create a hold point if it doesn't exist
+        // Automatically create a hold point if it doesn't exist
         if (holdPoint == null)
         {
             Camera cam = GetComponentInChildren<Camera>();
@@ -34,13 +34,13 @@ public class PlayerInteract : MonoBehaviour
 
     private void Update()
     {
-        // tab to open/close the terminal
+        // Tab to open/close the terminal
         if (Keyboard.current != null && Keyboard.current.tabKey.wasPressedThisFrame)
         {
             ToggleTerminal();
         }
 
-        // esc to close the terminal
+        // Esc to close the terminal
         if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             if (aiTerminal.Instance != null && aiTerminal.Instance.isOpen)
@@ -49,43 +49,43 @@ public class PlayerInteract : MonoBehaviour
             }
         }
 
-        //if ui open don't allow world interaction
+        // If UI open don't allow world interaction
         if (aiTerminal.Instance != null && aiTerminal.Instance.isOpen) return;
 
-        // q to drop the item
+        // Q to drop the item
         if (item != null && Keyboard.current != null && Keyboard.current.qKey.wasPressedThisFrame)
         {
             item.Drop();
             item = null;
         }
 
-        // e to interact with the world (pick up, insert, talk)
+        // E to interact with the world (pick up, insert, talk)
         if (Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
         {
             HandleWorldInteraction();
         }
     }
 
-    // radius-based interaction with the AI terminal, depending on whether the player is holding the terminal or not
+    // Radius-based interaction with the AI terminal, depending on whether the player is holding the terminal or not
     private void ToggleTerminal()
     {
         if (aiTerminal.Instance == null) return;
 
-        //close the terminal if it's already open
+        // Close the terminal if it's already open
         if (aiTerminal.Instance.isOpen)
         {
             aiTerminal.Instance.CloseTerminal();
             return;
         }
 
-        //if the player is holding the terminal, open it regardless of distance
+        // If the player is holding the terminal, open it regardless of distance
         if (item != null)
         {
             aiTerminal.Instance.OpenTerminal();
             return;
         }
 
-        //if the player is not holding the terminal, check if they are within range of the terminal in the world
+        // If the player is not holding the terminal, check if they are within range of the terminal in the world
         CarryableItem worldTerminal = FindAnyObjectByType<CarryableItem>();
         if (worldTerminal != null)
         {
@@ -96,7 +96,7 @@ public class PlayerInteract : MonoBehaviour
             }
             else
             {
-                Debug.Log("to far");
+                Debug.Log("too far");
             }
         }
     }
@@ -108,7 +108,7 @@ public class PlayerInteract : MonoBehaviour
 
         foreach (Collider col in colliderArray)
         {
-            //place item in socket if the player is holding an item and the socket is not activated
+            // 1. Place item in socket if holding an item and socket is empty
             if (item != null && col.TryGetComponent(out ItemSocket socket))
             {
                 if (!socket.isOccupied)
@@ -119,18 +119,7 @@ public class PlayerInteract : MonoBehaviour
                 }
             }
 
-            // pick up item if the player is not holding an item and the item is not being carried
-            if (item == null && col.TryGetComponent(out CarryableItem carryable))
-            {
-                if (!carryable.isCarried)
-                {
-                    carryable.PickUp(holdPoint);
-                    item = carryable;
-                    return;
-                }
-            }
-
-            //interact with NPC if the player is not holding an item and the NPC is interactable
+            // 2. Interact with NPC (Works regardless of holding an item or not)
             NPCInteractable npc = col.GetComponent<NPCInteractable>();
             if (npc == null)
             {
@@ -141,6 +130,17 @@ public class PlayerInteract : MonoBehaviour
             {
                 npc.Interact();
                 return;
+            }
+
+            // 3. Pick up item if not currently holding an item
+            if (item == null && col.TryGetComponent(out CarryableItem carryable))
+            {
+                if (!carryable.isCarried)
+                {
+                    carryable.PickUp(holdPoint);
+                    item = carryable;
+                    return;
+                }
             }
         }
     }

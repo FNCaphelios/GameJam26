@@ -29,6 +29,11 @@ public class NPCInteractable : MonoBehaviour
     [Header("Dialogue Tree")]
     [SerializeField] private List<DialogueNode> dialogueNodes = new List<DialogueNode>();
 
+    [Header("Conditional Dialogue (Item Check)")]
+    [SerializeField] private string requiredItemName = "QuestItem"; // Item required in hand
+    [SerializeField] private int itemDialogueNodeID = 5;            // Node ID to trigger when item is held
+    [SerializeField] private Transform playerHandSocket;            // Reference to player's hand transform
+
     [Header("Camera Alignment")]
     [SerializeField] private Transform npcFocusPoint;
     [SerializeField] private float focusSpeed = 5f;
@@ -103,11 +108,43 @@ public class NPCInteractable : MonoBehaviour
 
         playerCam = Camera.main;
         isDialogueActive = true;
-        currentNodeID = 0; // Starts at Node 0 (Opening Line)
+
+        // Check if the player is holding the specified item
+        if (IsPlayerHoldingItem(requiredItemName))
+        {
+            currentNodeID = itemDialogueNodeID;
+        }
+        else
+        {
+            currentNodeID = 0; // Default opening node
+        }
 
         if (dialogueCanvas != null) dialogueCanvas.SetActive(true);
 
         DisplayCurrentNode();
+    }
+
+    private bool IsPlayerHoldingItem(string targetName)
+    {
+        PlayerInteract player = FindAnyObjectByType<PlayerInteract>();
+
+        if (player != null && player.item != null)
+        {
+            // 1. Check CarryableItem.itemName variable
+            if (!string.IsNullOrEmpty(player.item.itemName) &&
+                player.item.itemName.Equals(targetName, System.StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            // 2. Check GameObject name (handles case sensitivity & clones)
+            if (player.item.gameObject.name.IndexOf(targetName, System.StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void DisplayCurrentNode()
