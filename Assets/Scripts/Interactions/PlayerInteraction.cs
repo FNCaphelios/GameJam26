@@ -17,6 +17,7 @@ public class PlayerInteraction : MonoBehaviour
 
     void Update()
     {
+        
         interactionText.text = "";
 
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
@@ -28,6 +29,7 @@ public class PlayerInteraction : MonoBehaviour
         {
 
             NPCInteractable npc = hit.collider.GetComponent<NPCInteractable>();
+
             // --- BEDINGUNG 1: NPC ---
             if (npc != null && !npc.isDialogueActive)
             {
@@ -35,11 +37,23 @@ public class PlayerInteraction : MonoBehaviour
 
                 
             }
+
             // --- BEDINGUNG 2: Item ---
-            else if (hit.collider.CompareTag("Item") && hasSpokenWithM == true)
+            else if (hit.collider.CompareTag("Item"))
             {
-                interactionText.text = "Press E to pickup";
-}
+
+                if (hit.collider.CompareTag("Item") && hasSpokenWithM == true)
+                {
+                    interactionText.text = "Press E to pickup";
+                }
+                else
+                {
+                    interactionText.text = "Press Tab to open Terminal";
+                }
+
+
+            }
+            
             }
         }
     
