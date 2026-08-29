@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class CarryableItem : MonoBehaviour
 {
+    [Header("Item Identifier")]
+    public string itemName = "QuestItem"; // Match this in your NPCInteractable Inspector
+
     private Rigidbody rigidBody;
     private Collider collider;
     public bool isCarried = false;
@@ -17,8 +20,8 @@ public class CarryableItem : MonoBehaviour
     {
         isCarried = true;
 
-        if(currentSocket != null) {
-
+        if (currentSocket != null)
+        {
             currentSocket.RemoveItem();
             currentSocket = null;
         }
@@ -35,7 +38,7 @@ public class CarryableItem : MonoBehaviour
     {
         isCarried = false;
 
-        if(currentSocket != null)
+        if (currentSocket != null)
         {
             currentSocket.RemoveItem();
             currentSocket = null;
@@ -46,7 +49,7 @@ public class CarryableItem : MonoBehaviour
         transform.SetParent(null);
     }
 
-    public void PlaceInSocket (ItemSocket socket,Transform socketPoint)
+    public void PlaceInSocket(ItemSocket socket, Transform socketPoint)
     {
         isCarried = false;
         currentSocket = socket;
