@@ -58,12 +58,13 @@ public class PlayerInteract : MonoBehaviour
             item.Drop();
             item = null;
         }
-
         // E to interact with the world (pick up, insert, talk)
-        if (Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
-        {
-            HandleWorldInteraction();
-        }
+        else if (Keyboard.current != null && Keyboard.current.qKey.wasPressedThisFrame)
+            {
+                HandleWorldInteraction();
+            }
+
+
     }
 
     // Radius-based interaction with the AI terminal, depending on whether the player is holding the terminal or not
