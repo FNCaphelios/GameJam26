@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 using TMPro;
 using System.Collections.Generic;
 
@@ -21,6 +22,13 @@ public class DialogueNode
 
 public class NPCInteractable : MonoBehaviour
 {
+    [Header("Run Target Settings")]
+    [SerializeField] private Transform runTargetPoint; // Where the NPC should run to
+    [SerializeField] private float runSpeed = 6f;      // NPC movement speed
+    [SerializeField] private bool disableNPCOnArrival = false; // Option to hide NPC when reaching destination
+
+    private NavMeshAgent agent;
+    private bool wasItemDialogueActive = false; // Tracks if the item dialogue triggered
     [Header("UI References")]
     [SerializeField] private GameObject dialogueCanvas;
     [SerializeField] private TextMeshProUGUI dialogueText;    // NPC response text area
@@ -40,12 +48,19 @@ public class NPCInteractable : MonoBehaviour
 
     private int currentNodeID = 0;
     private int selectedOptionIndex = 0;
-    private bool isDialogueActive = false;
+    public bool isDialogueActive = false;
     private Camera playerCam;
 
     private void Start()
     {
         if (dialogueCanvas != null) dialogueCanvas.SetActive(false);
+
+        // Get or add NavMeshAgent component automatically
+        agent = GetComponent<NavMeshAgent>();
+        if (agent == null)
+        {
+            agent = gameObject.AddComponent<NavMeshAgent>();
+        }
     }
 
     private void Update()
@@ -108,15 +123,18 @@ public class NPCInteractable : MonoBehaviour
 
         playerCam = Camera.main;
         isDialogueActive = true;
-
-        // Check if the player is holding the specified item
+        PlayerMovement player = FindAnyObjectByType<PlayerMovement>();
+        if (player != null) player.canMove = false;
+        // Check if player is holding the required item
         if (IsPlayerHoldingItem(requiredItemName))
         {
             currentNodeID = itemDialogueNodeID;
+            wasItemDialogueActive = true; // Mark that item interaction occurred
         }
         else
         {
             currentNodeID = 0; // Default opening node
+            wasItemDialogueActive = false;
         }
 
         if (dialogueCanvas != null) dialogueCanvas.SetActive(true);
@@ -238,9 +256,25 @@ public class NPCInteractable : MonoBehaviour
     public void EndDialogue()
     {
         isDialogueActive = false;
+        PlayerMovement player = FindAnyObjectByType<PlayerMovement>();
+        if (player != null) player.canMove = true;
         currentNodeID = 0;
         selectedOptionIndex = 0;
 
         if (dialogueCanvas != null) dialogueCanvas.SetActive(false);
+
+        // Trigger movement if item interaction took place
+        if (wasItemDialogueActive && runTargetPoint != null)
+        {
+            StartRunningToTarget();
+        }
+    }
+    private void StartRunningToTarget()
+    {
+        if (agent != null && runTargetPoint != null)
+        {
+            agent.speed = runSpeed;
+            agent.SetDestination(runTargetPoint.position);
+        }
     }
 }
