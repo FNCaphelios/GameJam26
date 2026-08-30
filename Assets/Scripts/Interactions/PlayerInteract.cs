@@ -53,16 +53,16 @@ public class PlayerInteract : MonoBehaviour
         if (aiTerminal.Instance != null && aiTerminal.Instance.isOpen) return;
 
         // Q to drop the item
-        if (item != null && Keyboard.current != null && Keyboard.current.fKey.wasPressedThisFrame)
+        if (item != null && Keyboard.current != null && Keyboard.current.qKey.wasPressedThisFrame)
         {
             item.Drop();
             item = null;
         }
         // E to interact with the world (pick up, insert, talk)
-        else if (Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
-            {
+        if (Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
+        {
                 HandleWorldInteraction();
-            }
+         }
 
 
     }
