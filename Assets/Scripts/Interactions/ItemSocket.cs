@@ -1,18 +1,34 @@
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class ItemSocket : MonoBehaviour
 {
+    [Header("Starting Item (Optional)")]
+    [Tooltip("Ziehe hier das AITerminal rein, damit es beim Spielstart fest im Socket sitzt!")]
+    public CarryableItem startingItem;
+
+    [Header("Socket References")]
     public Transform insertPoint;
-    public bool isOccupied = true;
+    public bool isOccupied = false;
     public CarryableItem currentItem;
+
+    [Header("Socket Events")]
     public UnityEvent onActivated;
     public UnityEvent onDeactivated;
 
+    private void Start()
+    {
+        // Wenn ein Start-Item zugewiesen ist -> beim Start direkt einsetzen:
+        if (startingItem != null)
+        {
+            isOccupied = false;
+            InsertItem(startingItem);
+        }
+    }
+
     public void InsertItem(CarryableItem item)
     {
-        if (isOccupied) return;
+        if (isOccupied || item == null) return;
 
         isOccupied = true;
         currentItem = item;
