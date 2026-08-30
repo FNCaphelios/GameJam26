@@ -261,10 +261,13 @@ public class NPCInteractable : MonoBehaviour
         selectedOptionIndex = 0;
         if (dialogueCanvas != null) dialogueCanvas.SetActive(false);
 
+        // Maanulsen läuft los & Invisible Wall wird geöffnet, wenn das Item in der Hand war:
         if (maanulsen && wasItemDialogueActive)
         {
+            // 1. Maanulsen weglaufen lassen:
             NPCMovement movement = GetComponent<NPCMovement>();
             if (movement == null) movement = gameObject.AddComponent<NPCMovement>();
+
             if (runTargetPoint != null)
             {
                 movement.WalkTo(runTargetPoint);
@@ -273,6 +276,16 @@ public class NPCInteractable : MonoBehaviour
             {
                 movement.isMoving = true;
             }
+
+            // 2. Die unsichtbare Wand am Kraftwerk deaktivieren:
+            InvisibleWall invisibleWall = FindAnyObjectByType<InvisibleWall>();
+            if (invisibleWall != null)
+            {
+                invisibleWall.SetWallState(false);
+                Debug.Log("<color=green>[PowerPlant] InvisibleWall wurde geöffnet!</color>");
+            }
+
+            // 3. Status für Spieler-Interaktion aktualisieren:
             PlayerInteraction playerInteraction = FindAnyObjectByType<PlayerInteraction>();
             if (playerInteraction != null)
             {
