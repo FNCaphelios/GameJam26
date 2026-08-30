@@ -51,28 +51,28 @@ public class NPCMovement : MonoBehaviour
         Vector3 targetPos = targetPoint.position;
         Debug.DrawLine(transform.position, targetPos, Color.green);
 
-        // 1. Oben-Richtung an den Planeten anpassen:
+        // up direction of the planet (or default up if no planet):
         Vector3 planetUp = transform.up;
         if (currentPlanet != null)
         {
             planetUp = (transform.position - currentPlanet.position).normalized;
         }
 
-        // 2. Richtung zum Ziel berechnen:
+        // direction to move towards the target, projected onto the plane defined by the planet's up direction:
         Vector3 moveDir = (targetPos - transform.position);
         Vector3 flatForward = Vector3.ProjectOnPlane(moveDir, planetUp);
 
-        // 3. Kapsel drehen:
+        // turn the NPC to face the target direction smoothly:
         if (flatForward.sqrMagnitude > 0.001f)
         {
             Quaternion targetRotation = Quaternion.LookRotation(flatForward.normalized, planetUp);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
 
-        // 4. Kapsel vorwärts bewegen:
+        // move the NPC towards the target position:
         transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
 
-        // 5. ALLE 5 TEILE SYNCHRON MITBEWEGEN:
+        // move and rotate the visual parts to match the NPC's movement and rotation:
         Quaternion deltaRotation = transform.rotation * Quaternion.Inverse(lastRotation);
 
         if (visualParts != null && visualParts.Length > 0)
@@ -92,11 +92,10 @@ public class NPCMovement : MonoBehaviour
         lastPosition = transform.position;
         lastRotation = transform.rotation;
 
-        // 6. Ziel erreicht?
+        // check if the NPC has reached the target position (within a small threshold):
         if (Vector3.Distance(transform.position, targetPos) < 0.5f)
         {
             isMoving = false;
-            Debug.Log("<color=green>" + name + " hat das Ziel erreicht!</color>");
         }
     }
 
@@ -107,6 +106,5 @@ public class NPCMovement : MonoBehaviour
         lastPosition = transform.position;
         lastRotation = transform.rotation;
         isMoving = true;
-        Debug.Log("<color=cyan>" + name + " startet WalkTo zu: " + destination.name + "</color>");
     }
 }
