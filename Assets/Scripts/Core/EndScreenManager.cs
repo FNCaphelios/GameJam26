@@ -1,67 +1,77 @@
 using UnityEngine;
 using TMPro;
-using System.Collections; 
+using System.Collections;
+
 public class EndScreenManager : MonoBehaviour
 {
     [Header("Test Toggle")]
-    [Tooltip("Setze diesen Haken im Play-Mode, um das Ende zu testen!")]
     public bool triggerEndScreen = false;
     private bool hasTriggered = false;
 
     [Header("UI Referenzen")]
     public GameObject blackBackground;
+    public TextMeshProUGUI descriptionText; // NEU: Der Beschreibungstext
     public TextMeshProUGUI theEndText;
     public TextMeshProUGUI thanksText;
 
     [Header("Timing")]
-    public float initialDelay = 1f; // Pause, bevor der erste Text kommt
-    public float delayBetweenTexts = 2.5f; // Pause zwischen Text 1 und Text 2
+    public float initialDelay = 1f;
+    public float descriptionDuration = 5f; // Wie lange man die Beschreibung lesen kann
+    public float delayBeforeCredits = 1.5f; // Pause, wenn die Beschreibung verschwindet
+    public float delayBetweenTexts = 2f;
 
     void Start()
     {
-        // Zu Spielstart zur Sicherheit alles verstecken
         if (blackBackground != null) blackBackground.SetActive(false);
+        if (descriptionText != null) descriptionText.gameObject.SetActive(false);
         if (theEndText != null) theEndText.gameObject.SetActive(false);
         if (thanksText != null) thanksText.gameObject.SetActive(false);
     }
 
     void Update()
     {
-        // Prüft, ob du den Haken im Inspector gesetzt hast
         if (triggerEndScreen && !hasTriggered)
         {
+            TriggerEnd();
+        }
+    }
+
+    public void TriggerEnd()
+    {
+        if (!hasTriggered)
+        {
             hasTriggered = true;
+            triggerEndScreen = true;
             StartCoroutine(PlayEndSequence());
         }
     }
 
-    // --- Diese Methode kannst du später von anderen Skripten aus aufrufen ---
-    // Beispiel: FindAnyObjectByType<EndScreenManager>().TriggerEnd();
-    public void TriggerEnd()
-    {
-        triggerEndScreen = true;
-    }
-
-    // Die zeitliche Abfolge (Coroutine)
     IEnumerator PlayEndSequence()
     {
-        // 1. Schwarzen Hintergrund aktivieren
-        blackBackground.SetActive(true);
+        // 0. Spieler-Bewegung stoppen (greift auf dein bestehendes PlayerMovement-Skript zu)
+        PlayerMovement player = FindAnyObjectByType<PlayerMovement>();
+        if (player != null) player.canMove = false;
 
-        // 2. Kurz warten (wirkt filmischer, als wenn der Text sofort da ist)
+        // 1. Bildschirm wird schwarz
+        blackBackground.SetActive(true);
         yield return new WaitForSeconds(initialDelay);
 
-        // 3. "The End" einblenden
-        theEndText.gameObject.SetActive(true);
+        // 2. Beschreibung ("Der Astronaut fand, was er suchte...")
+        descriptionText.gameObject.SetActive(true);
+        yield return new WaitForSeconds(descriptionDuration);
 
-        // 4. Die eingestellte Zeit warten...
+        // 3. Beschreibung wieder ausblenden
+        descriptionText.gameObject.SetActive(false);
+        yield return new WaitForSeconds(delayBeforeCredits);
+
+        // 4. Abspann ("The End")
+        theEndText.gameObject.SetActive(true);
         yield return new WaitForSeconds(delayBetweenTexts);
 
-        // 5. "thanks for playing!" einblenden
+        // 5. "Thanks for playing"
         thanksText.gameObject.SetActive(true);
 
-        // Optional für später: Hier könnte man den Cursor wieder freigeben, 
-        // damit der Spieler das Spiel beenden kann.
+        // Mauszeiger wieder einblenden, falls man das Spiel danach schließen will
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
