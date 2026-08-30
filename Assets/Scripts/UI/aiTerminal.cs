@@ -176,4 +176,23 @@ public class aiTerminal : MonoBehaviour
             SelectNPC(index);
         }
     }
+
+    public void UnlockNPCByName(string nameToUnlock)
+    {
+        if (string.IsNullOrEmpty(nameToUnlock)) return;
+        for (int i = 0; i < npcs.Length; i++)
+        {
+            if (npcs[i] != null && !string.IsNullOrEmpty(npcs[i].npcName))
+            {
+                // check if the nameToUnlock matches the npcName (case-insensitive)
+                if (nameToUnlock.IndexOf(npcs[i].npcName, System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    npcs[i].npcName.IndexOf(nameToUnlock, System.StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    UnlockNPC(i);
+                    Debug.Log("<color=yellow>[AI Terminal] NPC freigeschaltet: " + npcs[i].npcName + "</color>");
+                    return;
+                }
+            }
+        }
+    }
 }
