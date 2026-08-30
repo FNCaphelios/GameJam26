@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.AI;
 using TMPro;
 using System.Collections.Generic;
 
@@ -27,7 +26,6 @@ public class NPCInteractable : MonoBehaviour
     [SerializeField] private float runSpeed = 6f;      // NPC movement speed
     [SerializeField] private bool disableNPCOnArrival = false; // Option to hide NPC when reaching destination
 
-    private NavMeshAgent agent;
     private bool wasItemDialogueActive = false; // Tracks if the item dialogue triggered
     [Header("UI References")]
     [SerializeField] private GameObject dialogueCanvas;
@@ -55,16 +53,7 @@ public class NPCInteractable : MonoBehaviour
 
     private void Start()
     {
-        if (dialogueCanvas != null) dialogueCanvas.SetActive(false);
-
-        // Get or add NavMeshAgent component automatically
-        agent = GetComponent<NavMeshAgent>();
-        if (agent == null)
-        {
-            agent = gameObject.AddComponent<NavMeshAgent>();
-        }
-
-        
+        if (dialogueCanvas != null) dialogueCanvas.SetActive(false);  
     }
 
     private void Update()
@@ -264,31 +253,25 @@ public class NPCInteractable : MonoBehaviour
         if (player != null) player.canMove = true;
         currentNodeID = 0;
         selectedOptionIndex = 0;
-
         if (dialogueCanvas != null) dialogueCanvas.SetActive(false);
-
-        // Trigger movement if item interaction took place
-        if (wasItemDialogueActive && runTargetPoint != null)
-        {
-            StartRunningToTarget();
-        }
-
+        // Wenn es Maanulsen ist -> NPCMovement starten:
         if (maanulsen)
         {
+            NPCMovement movement = GetComponent<NPCMovement>();
+            if (movement == null) movement = gameObject.AddComponent<NPCMovement>();
+            if (runTargetPoint != null)
+            {
+                movement.WalkTo(runTargetPoint);
+            }
+            else
+            {
+                movement.isMoving = true;
+            }
             PlayerInteraction playerInteraction = FindAnyObjectByType<PlayerInteraction>();
             if (playerInteraction != null)
             {
-
                 playerInteraction.hasSpokenWithM = true;
             }
-        }
-    }
-    private void StartRunningToTarget()
-    {
-        if (agent != null && runTargetPoint != null)
-        {
-            agent.speed = runSpeed;
-            agent.SetDestination(runTargetPoint.position);
         }
     }
 }
