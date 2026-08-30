@@ -45,6 +45,9 @@ public class NPCInteractable : MonoBehaviour
     [SerializeField] private float focusSpeed = 5f;
     [SerializeField] private bool maanulsen = false;
 
+    [Header("AI Terminal Unlock")]
+    [SerializeField] private string npcName = "";
+
     private int currentNodeID = 0;
     private int selectedOptionIndex = 0;
     public bool isDialogueActive = false;
@@ -113,25 +116,28 @@ public class NPCInteractable : MonoBehaviour
     private void StartDialogue()
     {
         if (dialogueNodes == null || dialogueNodes.Count == 0) return;
-
+        // Schaltet den NPC sofort im AI-Terminal frei:
+        if (aiTerminal.Instance != null)
+        {
+            string targetName = !string.IsNullOrEmpty(npcName) ? npcName : gameObject.name;
+            aiTerminal.Instance.UnlockNPCByName(targetName);
+        }
         playerCam = Camera.main;
         isDialogueActive = true;
         PlayerMovement player = FindAnyObjectByType<PlayerMovement>();
         if (player != null) player.canMove = false;
-        // Check if player is holding the required item
+        // Prüfe, ob der Spieler das Terminal in der Hand hält:
         if (IsPlayerHoldingItem(requiredItemName))
         {
             currentNodeID = itemDialogueNodeID;
-            wasItemDialogueActive = true; // Mark that item interaction occurred
+            wasItemDialogueActive = true;
         }
         else
         {
-            currentNodeID = 0; // Default opening node
+            currentNodeID = 0;
             wasItemDialogueActive = false;
         }
-
         if (dialogueCanvas != null) dialogueCanvas.SetActive(true);
-
         DisplayCurrentNode();
     }
 
@@ -254,8 +260,8 @@ public class NPCInteractable : MonoBehaviour
         currentNodeID = 0;
         selectedOptionIndex = 0;
         if (dialogueCanvas != null) dialogueCanvas.SetActive(false);
-        // Wenn es Maanulsen ist -> NPCMovement starten:
-        if (maanulsen)
+
+        if (maanulsen && wasItemDialogueActive)
         {
             NPCMovement movement = GetComponent<NPCMovement>();
             if (movement == null) movement = gameObject.AddComponent<NPCMovement>();
