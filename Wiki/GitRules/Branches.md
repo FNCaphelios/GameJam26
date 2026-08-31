@@ -13,17 +13,21 @@ Prefix/Release/(Issue)/Name
 ## Beispielenamen für Branches
 
 feature/1.0.3/implementedMusicManager
+
 feature/1.3.1/createdNewHouseAssests
+
 debug/1.4.2/#15/removedTerminalDropBug
+
 refactor/2.0.0/renamedClasses
 
 
 ### Prefixes:
   Prefixes beschreiben kurz die Art des branches, dabei unterscheiden wir unter folgenden:
-    - *feature* - Neue Funktionen werden zu dem Spiel hinzugefügt
-    - *refactor* - Bestehender Code wird rein visuell angepasst, es ändert sich nichts an der Logik des Codes
-    - *debug* - Hier wird ungewolltes Spielverhalten behoben
-    - *doc* - Hier können ausbauten von Code vorgenommen werden
+  
+- *feature* - Neue Funktionen werden zu dem Spiel hinzugefügt
+- *refactor* - Bestehender Code wird rein visuell angepasst, es ändert sich nichts an der Logik des Codes
+- *debug* - Hier wird ungewolltes Spielverhalten behoben
+- *doc* - Hier können ausbauten von Code vorgenommen werden
 
 ### Releasenummer
 
@@ -39,6 +43,8 @@ Beispiel also wäre aktuell:
 .../1.2.3/... - Branch NACH der ersten Vollversion, NACH der zweiten Unterversion, NACH dem dritten Meeting nach Release der ersten Vollversion
 
 *Anmerkung* Bitte achtet genau auf die Releasenummer, damit später es beim Löschen von Branches zu keinen Missverständnissen kommt.
+
+#### Aktuelle Releasenr.: 1.1.1
 
 ### Issue
 
